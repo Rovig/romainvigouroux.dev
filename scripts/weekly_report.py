@@ -169,7 +169,7 @@ def analyse(log_dir: Path, start: dt.datetime, mid: dt.datetime, end: dt.datetim
             b["social_bots"][name] += 1
         elif kind == "bot":
             b["other_bots"] += 1
-        if path in ("/llms.txt", "/llms-full.txt") and status < 400:
+        if path.endswith(("/llms.txt", "/llms-full.txt")) and status < 400:
             b["llms_txt"][name or ("Humain" if kind == "human" else "Robot non identifié")] += 1
         if path.endswith(".md") and status < 400 and kind != "human":
             b["markdown_fetch"] += 1
