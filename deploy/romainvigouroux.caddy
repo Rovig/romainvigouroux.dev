@@ -1,0 +1,51 @@
+# /etc/caddy/romainvigouroux.caddy — site romainvigouroux.dev, importé par /etc/caddy/Caddyfile.
+# Fichier autonome (aucune option globale) : il cohabite avec d'autres sites servis par le même Caddy.
+# Caddy n'écoute QUE sur 127.0.0.1:8080 : seul cloudflared (sur la même machine) y accède.
+# HTTPS est assuré par Cloudflare ; la vraie IP du visiteur est lue dans l'en-tête Cf-Connecting-Ip.
+
+http://:8080 {
+	bind 127.0.0.1
+	root * /srv/romainvigouroux.dev/current
+	encode zstd gzip
+
+	header {
+		-Server
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "interest-cohort=()"
+	}
+
+	# Types MIME explicites pour les fichiers destinés aux IA.
+	@markdown path *.md
+	header @markdown Content-Type "text/markdown; charset=utf-8"
+	@plaintext path /robots.txt *llms.txt *llms-full.txt
+	header @plaintext Content-Type "text/plain; charset=utf-8"
+
+	# Cache : statiques longtemps, HTML court (les visites HTML remontent ainsi jusqu'au Pi et sont comptées).
+	@static path *.css *.svg *.png *.jpg *.jpeg *.webp *.woff2 *.ico
+	header @static Cache-Control "public, max-age=604800"
+	@pages not path *.css *.svg *.png *.jpg *.jpeg *.webp *.woff2 *.ico
+	header @pages Cache-Control "public, max-age=0, must-revalidate"
+
+	file_server
+
+	handle_errors {
+		@en path /en/*
+		rewrite @en /en/404.html
+		@de path /de/*
+		rewrite @de /de/404.html
+		rewrite * /404.html
+		file_server
+	}
+
+	# Journal d'accès JSON = source unique des statistiques (humains + robots d'IA).
+	log {
+		output file /var/log/caddy/site.log {
+			mode 0644
+			roll_size 50MiB
+			roll_keep 30
+			roll_keep_for 2160h
+		}
+		format json
+	}
+}
