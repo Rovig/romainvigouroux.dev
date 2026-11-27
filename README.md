@@ -9,7 +9,7 @@ Claude (conversation / Claude Code) ──► git push ──► GitHub (dépôt
                                                         ▼
 Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → IndexNow → LinkedIn
      │
-  Caddy 127.0.0.1:8080 (journaux JSON) ◄── cloudflared (tunnel sortant, aucun port ouvert)
+  Caddy 127.0.0.1:8090 (journaux JSON) ◄── cloudflared (tunnel sortant, aucun port ouvert)
                                                         │
                                    Cloudflare (HTTPS, cache, DNS) ◄── humains, Google, Bing, robots d'IA
      │
@@ -41,16 +41,18 @@ git clone https://github.com/Rovig/romainvigouroux.dev.git /tmp/rv
 sudo bash /tmp/rv/deploy/install.sh https://github.com/Rovig/romainvigouroux.dev.git <TOKEN_TUNNEL>
 ```
 Le script installe Hugo (version figée, somme de contrôle vérifiée) **à part, dans `/opt/hugo`**, sans toucher au
-`hugo` du système dont dépend le site rbrtvgrx (0.111.3). Il n'écrase rien d'existant : le site Caddy est un fichier
+`hugo` du système dont dépend le site rbrtvgrx (0.111.3). Ce site-là est servi par **nginx** (ports 80 et 8080) :
+Caddy tourne à côté, sur `127.0.0.1:8090`, et le script s'arrête sans rien modifier si ce port est déjà pris. nginx
+n'est jamais touché. Il n'écrase rien d'existant : le site Caddy est un fichier
 séparé (`/etc/caddy/romainvigouroux.caddy`) ajouté par `import`, et si un tunnel cloudflared tourne déjà, il le laisse
-en place (il suffit d'ajouter le nom d'hôte `romainvigouroux.dev` → `127.0.0.1:8080` à ce tunnel). Si le dépôt est privé,
+en place (il suffit d'ajouter le nom d'hôte `romainvigouroux.dev` → `127.0.0.1:8090` à ce tunnel). Si le dépôt est privé,
 utilise l'URL `git@github.com:Rovig/romainvigouroux.dev.git` et colle la **clé de déploiement** affichée dans
 GitHub → dépôt → Settings → Deploy keys (lecture seule).
 Tu peux lancer `install.sh` sans token puis le relancer à l'étape 3.
 
 ### 3. Cloudflare
 1. **Tunnel** : Zero Trust → Networks → Tunnels → *Create a tunnel* (cloudflared) → copie le token (c'est `<TOKEN_TUNNEL>`).
-   *Public hostname* : `romainvigouroux.dev` → `HTTP` → `127.0.0.1:8080` (pas `localhost` : Caddy n'écoute qu'en IPv4). Ajoute aussi `www` et une *Redirect Rule*
+   *Public hostname* : `romainvigouroux.dev` → `HTTP` → `127.0.0.1:8090` (pas `localhost` : Caddy n'écoute qu'en IPv4). Ajoute aussi `www` et une *Redirect Rule*
    `www.romainvigouroux.dev/*` → `https://romainvigouroux.dev/${1}` (301).
 2. **Robots d'IA — le réglage le plus important.** Ton domaine est récent : Cloudflare applique par défaut des blocages
    de certains robots d'IA. Dans *Security → Settings → Bot traffic* (ou *AI Crawl Control*) :

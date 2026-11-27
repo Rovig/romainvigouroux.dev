@@ -1,9 +1,9 @@
 # /etc/caddy/romainvigouroux.caddy — site romainvigouroux.dev, importé par /etc/caddy/Caddyfile.
 # Fichier autonome (aucune option globale) : il cohabite avec d'autres sites servis par le même Caddy.
-# Caddy n'écoute QUE sur 127.0.0.1:8080 : seul cloudflared (sur la même machine) y accède.
+# Caddy n'écoute QUE sur 127.0.0.1:8090 : seul cloudflared (sur la même machine) y accède.
 # HTTPS est assuré par Cloudflare ; la vraie IP du visiteur est lue dans l'en-tête Cf-Connecting-Ip.
 
-http://:8080 {
+http://:8090 {
 	bind 127.0.0.1
 	root * /srv/romainvigouroux.dev/current
 	encode zstd gzip

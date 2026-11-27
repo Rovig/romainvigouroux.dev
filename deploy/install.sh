@@ -11,6 +11,20 @@ REPO_URL="${1:?Usage: sudo bash install.sh <URL_DU_DEPOT_GIT> [TOKEN_TUNNEL]}"
 TUNNEL_TOKEN="${2:-}"
 BASE=/srv/romainvigouroux.dev
 [[ $EUID -eq 0 ]] || { echo "Lancer avec sudo"; exit 1; }
+PORT=8090   # doit correspondre à deploy/romainvigouroux.caddy
+
+echo "==> Vérification du port $PORT (avant toute modification du système)"
+# Le site rbrtvgrx est servi par nginx sur ce même Pi (port 8080 et :80) : on vérifie qu'il n'y a pas de collision.
+OCCUPANT=$(ss -ltnpH "sport = :$PORT" 2>/dev/null || true)
+if [[ -n "$OCCUPANT" && "$OCCUPANT" != *caddy* ]]; then
+  echo "Le port $PORT est déjà utilisé par autre chose que Caddy :"
+  echo "$OCCUPANT"
+  echo "Choisis un autre port dans romainvigouroux.caddy et PORT= ci-dessus, puis relance. Rien n'a été modifié."
+  exit 1
+fi
+if systemctl is-active --quiet nginx; then
+  echo "    nginx est actif (autre site) : il n'est pas modifié, Caddy écoute à côté sur 127.0.0.1:$PORT."
+fi
 
 echo "==> Paquets système"
 apt-get update -qq
@@ -46,7 +60,18 @@ if [[ ! -f /etc/apt/sources.list.d/cloudflared.list ]]; then
     > /etc/apt/sources.list.d/cloudflared.list
 fi
 apt-get update -qq
-for pkg in caddy cloudflared; do dpkg -s "$pkg" &>/dev/null || apt-get install -y -qq "$pkg"; done
+dpkg -s cloudflared &>/dev/null || apt-get install -y -qq cloudflared
+if ! dpkg -s caddy &>/dev/null && [[ ! -e /usr/sbin/policy-rc.d ]]; then
+  # Le paquet démarre Caddy avec un site de démonstration sur :80, port déjà tenu par nginx :
+  # on empêche ce démarrage automatique ; Caddy est lancé plus bas, avec la bonne configuration.
+  printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d && chmod 0755 /usr/sbin/policy-rc.d
+  trap 'rm -f /usr/sbin/policy-rc.d' EXIT
+  apt-get install -y -qq caddy
+  rm -f /usr/sbin/policy-rc.d
+  trap - EXIT
+elif ! dpkg -s caddy &>/dev/null; then
+  apt-get install -y -qq caddy   # policy-rc.d déjà présent sur le système : on ne le touche pas
+fi
 
 echo "==> Utilisateur de service 'blog' et arborescence"
 id blog &>/dev/null || useradd --system --create-home --home-dir /home/blog --shell /usr/sbin/nologin blog
@@ -108,7 +133,7 @@ systemctl enable --now site-update.timer site-report.timer
 if systemctl list-unit-files cloudflared.service &>/dev/null && systemctl is-enabled cloudflared &>/dev/null; then
   echo "==> Tunnel Cloudflare déjà en service sur ce Pi : on n'y touche pas."
   echo "    Dans le tableau de bord Cloudflare, ajoute à CE tunnel un Public hostname :"
-  echo "    romainvigouroux.dev → HTTP → 127.0.0.1:8080"
+  echo "    romainvigouroux.dev → HTTP → 127.0.0.1:8090"
 elif [[ -n "$TUNNEL_TOKEN" ]]; then
   echo "==> Tunnel Cloudflare"
   cloudflared service install "$TUNNEL_TOKEN"
@@ -117,7 +142,7 @@ fi
 
 echo
 echo "Terminé. Vérifications :"
-echo "  curl -sI http://127.0.0.1:8080/            # doit répondre 200"
+echo "  curl -sI http://127.0.0.1:8090/            # doit répondre 200"
 echo "  systemctl list-timers 'site-*'             # deux timers actifs"
 echo "  journalctl -u site-update -n 20            # journal des déploiements"
 echo "Ensuite : remplir /etc/romainvigouroux/secrets.env (SMTP, LinkedIn)."
