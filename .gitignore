@@ -1,7 +1,8 @@
 public/
-__pycache__/
-*.pyc
+.hugo_build.lock
+resources/_gen/
 state/
 reports/
 .env
 secrets.env
+__pycache__/

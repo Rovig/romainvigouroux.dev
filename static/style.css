@@ -100,6 +100,8 @@ h3 { font-size: 1.2rem; margin: 1.8em 0 .4em; }
 @media (max-width: 560px) { .case-card dl div { grid-template-columns: 1fr; gap: 2px; } }
 .toc { border-left: 3px solid var(--accent); padding: 4px 0 4px 18px; margin: 28px 0; font-size: .95rem; }
 .toc ol { margin: 0; padding-left: 18px; }
+.toc nav > ol { padding-left: 18px; }
+.lang-switch { font: .8rem/1 var(--mono); }
 .prose p, .prose li { hyphens: manual; overflow-wrap: break-word; }
 .prose img { max-width: 100%; height: auto; border-radius: var(--radius); }
 .prose blockquote { margin: 1.4em 0; padding: .2em 1.2em; border-left: 4px solid var(--accent); background: var(--paper-2); font-family: var(--serif); font-size: 1.08rem; }
@@ -109,9 +111,9 @@ h3 { font-size: 1.2rem; margin: 1.8em 0 .4em; }
 .headerlink { text-decoration: none; margin-left: .3em; opacity: 0; color: var(--accent-ink); }
 h2:hover .headerlink, h3:hover .headerlink { opacity: 1; }
 code { font: .86em var(--mono); background: var(--paper-2); border: 1px solid var(--line); padding: .1em .35em; border-radius: 4px; }
-pre, .hl { background: var(--code-bg) !important; color: #e6e6e6; border-radius: var(--radius); overflow-x: auto; }
+pre, .highlight pre { background: var(--code-bg) !important; color: #e6e6e6; border-radius: var(--radius); overflow-x: auto; }
 pre { padding: 16px 18px; font-size: .84rem; line-height: 1.55; }
-.hl { margin: 1.4em 0; } .hl pre { margin: 0; }
+.highlight { margin: 1.4em 0; } .highlight pre { margin: 0; }
 pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
 .admonition { border: 1px solid var(--line); border-left: 4px solid var(--accent); background: var(--paper-2); padding: 10px 16px; border-radius: 6px; margin: 1.4em 0; }
 .admonition-title { font: 600 .78rem/1 var(--mono); text-transform: uppercase; letter-spacing: .1em; margin: 6px 0; }
@@ -126,4 +128,4 @@ pre code { background: none; border: 0; padding: 0; font-size: inherit; color: i
 .contact-card { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 18px; text-decoration: none; background: var(--paper-2); font-weight: 600; }
 .contact-card:hover { box-shadow: 5px 5px 0 var(--accent); background: var(--paper-2); }
 
-@media (max-width: 420px) { .site-header nav a[href="/sujets/"] { display: none; } }
+@media (max-width: 520px) { .site-header nav .nav-topics, .brand-text { display: none; } .site-header nav a { margin-left: 12px; } }

@@ -1,0 +1,51 @@
+{{- /* Graphe schema.org de la page. Une seule entité Person (même @id dans toutes les langues). */ -}}
+{{- $base := strings.TrimSuffix "/" site.BaseURL -}}
+{{- $personID := printf "%s/#person" $base -}}
+{{- $websiteID := printf "%s#website" site.Home.Permalink -}}
+{{- $about := site.GetPage "/a-propos" -}}
+{{- $person := dict "@type" "Person" "@id" $personID "name" site.Params.author "url" (printf "%s/" $base) "jobTitle" site.Params.jobTitle "sameAs" site.Params.sameAs -}}
+{{- $personFull := merge $person (dict "description" site.Params.bio "knowsAbout" site.Params.knowsAbout "email" (printf "mailto:%s" site.Params.email) "image" (absURL site.Params.image) "homeLocation" (dict "@type" "Country" "name" site.Params.location)) -}}
+{{- with $about }}{{ $personFull = merge $personFull (dict "mainEntityOfPage" .Permalink) }}{{ end -}}
+
+{{- $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" (i18n "home") "item" site.Home.Permalink) -}}
+{{- if and .IsPage (eq .Section "articles") }}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" (i18n "articles") "item" .Parent.Permalink) -}}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) -}}
+{{- else if not .IsHome }}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" .Title "item" .Permalink) -}}
+{{- end }}
+{{- $breadcrumb := dict "@type" "BreadcrumbList" "itemListElement" $crumbs -}}
+
+{{- $graph := slice -}}
+{{- if .IsHome }}
+  {{- $website := dict "@type" "WebSite" "@id" $websiteID "url" site.Home.Permalink "name" site.Title "description" site.Params.description "inLanguage" site.Language.Locale "publisher" (dict "@id" $personID) "author" (dict "@id" $personID) -}}
+  {{- $graph = slice $website $personFull -}}
+{{- else if and .IsPage (eq .Section "articles") }}
+  {{- $p := .Params -}}
+  {{- $about := slice }}{{ range $p.tags }}{{ $about = $about | append (dict "@type" "Thing" "name" .) }}{{ end -}}
+  {{- $kw := slice }}{{ with $p.keywords }}{{ $kw = . }}{{ end }}{{ with $p.tags }}{{ $kw = $kw | append . }}{{ end -}}
+  {{- $article := dict "@type" "TechArticle" "@id" (printf "%s#article" .Permalink) "headline" .Title "description" .Description "url" .Permalink "mainEntityOfPage" .Permalink "datePublished" (.Date.Format "2006-01-02") "dateModified" (.Lastmod.Format "2006-01-02") "inLanguage" site.Language.Locale "wordCount" .WordCount "timeRequired" (printf "PT%dM" .ReadingTime) "author" (dict "@id" $personID) "publisher" (dict "@id" $personID) "isPartOf" (dict "@id" $websiteID) "keywords" (delimit $kw ", ") "about" $about -}}
+  {{- with .OutputFormats.Get "markdown" }}{{ $article = merge $article (dict "encoding" (dict "@type" "MediaObject" "encodingFormat" "text/markdown" "contentUrl" .Permalink)) }}{{ end -}}
+  {{- with $p.problem }}{{ $article = merge $article (dict "abstract" .) }}{{ end -}}
+  {{- with $p.stack }}{{ $m := slice }}{{ range . }}{{ $m = $m | append (dict "@type" "SoftwareApplication" "name" .) }}{{ end }}{{ $article = merge $article (dict "mentions" $m) }}{{ end -}}
+  {{- with $p.image }}{{ $article = merge $article (dict "image" (absURL .)) }}{{ end -}}
+  {{- $trans := slice }}{{ range .Translations }}{{ $trans = $trans | append (dict "@id" (printf "%s#article" .Permalink)) }}{{ end -}}
+  {{- with $trans }}{{ $article = merge $article (dict "workTranslation" .) }}{{ end -}}
+  {{- $graph = slice $article $person $breadcrumb -}}
+  {{- with $p.faq }}
+    {{- $qs := slice }}{{ range . }}{{ $qs = $qs | append (dict "@type" "Question" "name" .q "acceptedAnswer" (dict "@type" "Answer" "text" .a)) }}{{ end -}}
+    {{- $graph = $graph | append (dict "@type" "FAQPage" "@id" (printf "%s#faq" $.Permalink) "mainEntity" $qs) -}}
+  {{- end }}
+{{- else if eq .Params.schema "profile" }}
+  {{- $graph = slice $breadcrumb (dict "@type" "ProfilePage" "url" .Permalink "mainEntity" $personFull "dateModified" (.Lastmod.Format "2006-01-02")) -}}
+{{- else if eq .Params.schema "contact" }}
+  {{- $graph = slice $breadcrumb (dict "@type" "ContactPage" "url" .Permalink "about" (dict "@id" $personID)) $person -}}
+{{- else if or (eq .Kind "section") (eq .Kind "term") }}
+  {{- $items := slice }}{{ range $i, $q := .Pages }}{{ $items = $items | append (dict "@type" "ListItem" "position" (add $i 1) "url" $q.Permalink "name" $q.Title) }}{{ end -}}
+  {{- $graph = slice (dict "@type" "CollectionPage" "name" .Title "url" .Permalink "isPartOf" (dict "@id" $websiteID) "mainEntity" (dict "@type" "ItemList" "itemListElement" $items)) $breadcrumb -}}
+{{- else if ne .Kind "404" }}
+  {{- $graph = slice $breadcrumb -}}
+{{- end }}
+{{- with $graph }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" . | jsonify (dict "indent" " ") | safeJS }}</script>
+{{- end }}
