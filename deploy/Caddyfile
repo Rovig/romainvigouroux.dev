@@ -40,6 +40,8 @@ http://:8080 {
 	handle_errors {
 		@en path /en/*
 		rewrite @en /en/404.html
+		@de path /de/*
+		rewrite @de /de/404.html
 		rewrite * /404.html
 		file_server
 	}

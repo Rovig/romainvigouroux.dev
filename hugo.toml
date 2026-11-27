@@ -70,6 +70,28 @@ capitalizeListTitles = false
     [languages.en.permalinks.term]
       tags = "/topics/:slug/"
 
+  [languages.de]
+    locale = "de-DE"
+    label = "Deutsch"
+    title = "Romain Vigouroux — KI-Architekt"
+    weight = 3
+    [languages.de.params]
+      jobTitle = "KI-Architekt"
+      tagline = "Komplexe Probleme, Architekturen, die sie lösen."
+      description = "Romain Vigouroux, KI-Architekt und Praktiker des Agentic Coding. Erfahrungsberichte zu komplexen fachlichen Problemen, gelöst mit schlanken KI-Architekturen: Agenten, RAG, MCP, Automatisierung."
+      bio = "Romain Vigouroux ist KI-Architekt mit Sitz in Frankreich. Er praktiziert täglich Agentic Coding und entwirft KI-Architekturen (Agenten, RAG, MCP, Automatisierung), die komplexe fachliche Anforderungen seiner Kunden lösen."
+      location = "Frankreich"
+      cta = "Ein fachliches Problem, das sich nicht lösen lässt? Beschreiben Sie es mir in drei Zeilen."
+      knowsAbout = ["KI-Architektur", "Agentic Coding", "Multi-Agenten-Systeme", "RAG (Retrieval-Augmented Generation)", "Model Context Protocol (MCP)", "Automatisierung von Geschäftsprozessen", "Claude Code", "GEO (Generative Engine Optimization)"]
+    [languages.de.permalinks.page]
+      articles = "/artikel/:slug/"
+    [languages.de.permalinks.section]
+      articles = "/artikel/"
+    [languages.de.permalinks.taxonomy]
+      tags = "/themen/"
+    [languages.de.permalinks.term]
+      tags = "/themen/:slug/"
+
 [taxonomies]
   tag = "tags"
 

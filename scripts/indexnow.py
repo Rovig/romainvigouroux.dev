@@ -43,7 +43,7 @@ def main() -> None:
     changed = [p["url"] for p in manifest if seen.get(p["url"]) != p["hash"]]
     if not changed:
         return
-    urls = changed + [f"{base}/", f"{base}/articles/", f"{base}/en/", f"{base}/llms.txt", f"{base}/sitemap.xml"]
+    urls = changed + [f"{base}/", f"{base}/articles/", f"{base}/en/", f"{base}/de/", f"{base}/llms.txt", f"{base}/sitemap.xml"]
     payload = {"host": base.split("//", 1)[1], "key": key, "keyLocation": f"{base}/{key}.txt", "urlList": urls}
     print(f"[indexnow] {len(changed)} URL modifiée(s)")
     if args.dry_run:

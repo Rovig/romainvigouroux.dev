@@ -49,10 +49,14 @@
       {{- with site.GetPage "/tags" }}<a class="nav-topics" href="{{ .RelPermalink }}">{{ i18n "topics" }}</a>{{ end }}
       {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ i18n "about" }}</a>{{ end }}
       {{- with site.GetPage "/contact" }}<a class="nav-cta" href="{{ .RelPermalink }}">{{ i18n "contact" }}</a>{{ end }}
-      {{- $other := "" }}
-      {{- range .Translations }}{{ $other = .RelPermalink }}{{ end }}
-      {{- if not $other }}{{ range hugo.Sites }}{{ if ne .Language.Lang site.Language.Lang }}{{ $other = .Home.RelPermalink }}{{ end }}{{ end }}{{ end }}
-      <a class="lang-switch" href="{{ $other }}" hreflang="{{ cond (eq site.Language.Lang "fr") "en" "fr" }}">{{ cond (eq site.Language.Lang "fr") "EN" "FR" }}</a>
+      {{- $page := . }}
+      <span class="lang-switch">
+      {{- range hugo.Sites }}{{ if ne .Language.Lang site.Language.Lang }}
+        {{- $lang := .Language.Lang }}{{ $href := .Home.RelPermalink }}
+        {{- range $page.Translations }}{{ if eq .Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+        <a href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ .Language.Label }}">{{ upper $lang }}</a>
+      {{- end }}{{ end }}
+      </span>
     </nav>
   </div>
 </header>
