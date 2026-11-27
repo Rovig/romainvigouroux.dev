@@ -1,0 +1,6 @@
+{{- $items := slice -}}
+{{- range where site.RegularPages "Section" "articles" -}}
+{{- $hash := print .RawContent .Title .Description (.Lastmod.Format "2006-01-02") | md5 | truncate 16 "" -}}
+{{- $items = $items | append (dict "slug" .Slug "url" .Permalink "title" .Title "description" .Description "date" (.Date.Format "2006-01-02") "updated" (.Lastmod.Format "2006-01-02") "hash" $hash "linkedin" (.Params.linkedin | default false) "linkedin_post" (.Params.linkedin_post | default "") "tags" (.Params.tags | default slice) "lang" site.Language.Lang) -}}
+{{- end -}}
+{{- $items | jsonify (dict "indent" " ") -}}

@@ -1,0 +1,8 @@
+{{- range where site.RegularPages "Section" "ne" "articles" }}
+{{ partial "export.md" . }}
+---
+{{ end }}
+{{- range where site.RegularPages "Section" "articles" }}
+{{ partial "export.md" . }}
+---
+{{ end -}}

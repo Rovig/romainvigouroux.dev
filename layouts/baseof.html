@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- $title := cond .IsHome site.Title (printf "%s — %s" .Title site.Params.author) }}
+{{- $desc := or .Description site.Params.description }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ site.Params.author }}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="{{ .Permalink }}">
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
+{{- end }}
+{{- range .AllTranslations }}{{ if eq .Language.Weight 1 }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{- end }}{{ end }}
+{{- with site.Home.OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
+{{- end }}
+<link rel="alternate" type="text/plain" title="llms.txt" href="{{ site.Home.Permalink }}llms.txt">
+{{- with .OutputFormats.Get "markdown" }}
+<link rel="alternate" type="text/markdown" title="Markdown" href="{{ .Permalink }}">
+{{- end }}
+{{- block "head" . }}{{ end }}
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:locale" content="{{ replace site.Language.Locale "-" "_" }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="{{ cond (eq .Section "articles") (cond .IsPage "article" "website") "website" }}">
+<meta property="og:image" content="{{ absURL site.Params.image }}">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="{{ "/favicon.svg" | relURL }}" type="image/svg+xml">
+<link rel="stylesheet" href="{{ "/style.css" | relURL }}">
+{{ partial "jsonld.html" . }}
+</head>
+<body>
+<a class="skip" href="#contenu">{{ i18n "skip" }}</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}" rel="home">
+      <span class="brand-mark" aria-hidden="true">rv</span>
+      <span class="brand-text"><strong>{{ site.Params.author }}</strong><span>{{ site.Params.jobTitle }}</span></span>
+    </a>
+    <nav aria-label="{{ i18n "nav_label" }}">
+      {{- with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "articles" }}</a>{{ end }}
+      {{- with site.GetPage "/tags" }}<a class="nav-topics" href="{{ .RelPermalink }}">{{ i18n "topics" }}</a>{{ end }}
+      {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ i18n "about" }}</a>{{ end }}
+      {{- with site.GetPage "/contact" }}<a class="nav-cta" href="{{ .RelPermalink }}">{{ i18n "contact" }}</a>{{ end }}
+      {{- $other := "" }}
+      {{- range .Translations }}{{ $other = .RelPermalink }}{{ end }}
+      {{- if not $other }}{{ range hugo.Sites }}{{ if ne .Language.Lang site.Language.Lang }}{{ $other = .Home.RelPermalink }}{{ end }}{{ end }}{{ end }}
+      <a class="lang-switch" href="{{ $other }}" hreflang="{{ cond (eq site.Language.Lang "fr") "en" "fr" }}">{{ cond (eq site.Language.Lang "fr") "EN" "FR" }}</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+{{ block "main" . }}{{ end }}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong>{{ site.Params.author }}</strong> — {{ site.Params.jobTitle }}. {{ site.Params.tagline }}</p>
+    <p class="footer-links">
+      {{- range site.Params.sameAs }}<a href="{{ . }}" rel="me">{{ index (split . "/") 2 | replaceRE "^www\\." "" }}</a>{{ end }}
+      <a href="{{ site.Home.RelPermalink }}feed.xml">RSS</a><a href="{{ site.Home.RelPermalink }}llms.txt">llms.txt</a>
+    </p>
+    <p class="muted">© {{ now.Year }} {{ site.Params.author }} · {{ i18n "footer_host" }}</p>
+  </div>
+</footer>
+</body>
+</html>

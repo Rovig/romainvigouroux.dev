@@ -1,0 +1,15 @@
+<ol class="post-list">
+{{- range . }}
+  <li class="post-item">
+    <a class="post-link" href="{{ .RelPermalink }}">
+      <span class="post-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time> · {{ i18n "reading_short" .ReadingTime }}</span>
+      <span class="post-title">{{ .Title }}</span>
+      {{- with .Params.problem }}<span class="post-problem"><b>{{ i18n "problem_short" }}</b> {{ . }}</span>
+      {{- else }}<span class="post-problem">{{ .Description }}</span>{{ end }}
+    </a>
+    {{- with .GetTerms "tags" }}<span class="tags">{{ range . }}<a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</span>{{ end }}
+  </li>
+{{- else }}
+  <li class="muted">{{ i18n "first_soon" }}</li>
+{{- end }}
+</ol>

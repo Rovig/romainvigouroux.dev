@@ -1,0 +1,6 @@
+{{ define "main" }}
+<section class="wrap">
+  <h1>{{ i18n "not_found" }}</h1>
+  <p class="lede">{{ i18n "not_found_text" }} {{ with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "here" }}</a>{{ end }}.</p>
+</section>
+{{ end }}

@@ -1,0 +1,12 @@
+# robots.txt — romainvigouroux.dev
+# Ce site SOUHAITE être lu, indexé, cité et appris par les moteurs de recherche et les IA.
+# Content Signals (https://contentsignals.org) : recherche, réponses IA et entraînement autorisés.
+
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
+{{ range slice "GPTBot" "OAI-SearchBot" "ChatGPT-User" "ClaudeBot" "Claude-User" "Claude-SearchBot" "PerplexityBot" "Perplexity-User" "Google-Extended" "Googlebot" "Bingbot" "Applebot" "Applebot-Extended" "Amazonbot" "DuckAssistBot" "MistralAI-User" "CCBot" "meta-externalagent" }}
+User-agent: {{ . }}
+Allow: /
+{{ end }}
+Sitemap: {{ "sitemap.xml" | absURL }}

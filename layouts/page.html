@@ -1,0 +1,15 @@
+{{ define "main" }}
+<article class="wrap page">
+  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / {{ .Title }}</nav>
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  <div class="prose">{{ .Content }}</div>
+  {{- if eq .Params.schema "contact" }}
+  <div class="contact-grid">
+    <a class="contact-card" href="mailto:{{ site.Params.email }}?subject={{ i18n "mail_subject" | urlquery }}"><span class="label">{{ i18n "email" }}</span>{{ site.Params.email }}</a>
+    <a class="contact-card" href="{{ site.Params.linkedin }}" rel="me"><span class="label">LinkedIn</span>{{ i18n "direct_message" }}</a>
+    {{- with site.Params.calendar }}<a class="contact-card" href="{{ . }}"><span class="label">{{ i18n "calendar" }}</span>{{ i18n "book" }}</a>{{ end }}
+  </div>
+  {{- end }}
+</article>
+{{ end }}
