@@ -10,6 +10,7 @@ timeZone = "Europe/Paris"
 summaryLength = 40
 titleCaseStyle = "none"
 capitalizeListTitles = false
+removePathAccents = true
 
 [params]
   author = "Romain Vigouroux"

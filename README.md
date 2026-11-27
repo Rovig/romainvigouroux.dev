@@ -40,7 +40,10 @@ C'est fait : https://github.com/Rovig/romainvigouroux.dev
 git clone https://github.com/Rovig/romainvigouroux.dev.git /tmp/rv
 sudo bash /tmp/rv/deploy/install.sh https://github.com/Rovig/romainvigouroux.dev.git <TOKEN_TUNNEL>
 ```
-Le script installe Hugo (version figée, somme de contrôle vérifiée), Caddy et cloudflared. Si le dépôt est privé,
+Le script installe Hugo (version figée, somme de contrôle vérifiée) **à part, dans `/opt/hugo`**, sans toucher au
+`hugo` du système dont dépend le site rbrtvgrx (0.111.3). Il n'écrase rien d'existant : le site Caddy est un fichier
+séparé (`/etc/caddy/romainvigouroux.caddy`) ajouté par `import`, et si un tunnel cloudflared tourne déjà, il le laisse
+en place (il suffit d'ajouter le nom d'hôte `romainvigouroux.dev` → `127.0.0.1:8080` à ce tunnel). Si le dépôt est privé,
 utilise l'URL `git@github.com:Rovig/romainvigouroux.dev.git` et colle la **clé de déploiement** affichée dans
 GitHub → dépôt → Settings → Deploy keys (lecture seule).
 Tu peux lancer `install.sh` sans token puis le relancer à l'étape 3.
