@@ -19,7 +19,17 @@ difficile (contraintes, enjeux, acteurs) résolu par la solution la plus simple 
 
 ## Structure d'un article (le récit)
 
-Fichier : `content/posts/AAAA-MM-JJ-slug-court.md` (utilise `python3 scripts/new_post.py "Titre"`).
+Le site est construit avec **Hugo** et existe en **français (langue principale) et en anglais**.
+
+- Article français : `content/articles/AAAA-MM-JJ-slug-court.md` — créer le squelette avec
+  `hugo new content articles/AAAA-MM-JJ-slug-court.md`.
+- Traduction anglaise : **même nom de fichier** avec `.en.md` (`content/articles/AAAA-MM-JJ-slug-court.en.md`),
+  avec un `slug` anglais. C'est le nom de fichier identique qui relie les deux versions.
+- L'anglais n'est pas une traduction littérale : même faits, mêmes chiffres, mais tournures naturelles pour un
+  lecteur anglophone (recruteur international, CTO). Les titres de sections en anglais : *The situation*,
+  *Why it's harder than it looks*, *The options I ruled out*, *The architecture I chose*, *What it delivered*,
+  *What I would do differently*.
+- `linkedin` et `linkedin_post` uniquement dans la version française.
 
 1. **Premier paragraphe = la réponse.** 40 à 70 mots qui se suffisent à eux-mêmes : quel problème, pour qui,
    quelle approche, quel résultat. C'est le passage que les IA extraient et citent.
@@ -40,12 +50,12 @@ Longueur cible : 1 000 à 1 800 mots. Ton : première personne, direct, phrases 
 - **Titres H2/H3 formulés comme des questions ou des affirmations nettes**, jamais « Introduction » ou « Conclusion ».
 - **Un paragraphe = une idée**, autonome : il doit rester compréhensible s'il est extrait seul.
 - **Définir chaque terme technique** à sa première occurrence (« le RAG, c'est-à-dire… »).
-- **Les termes-clés de Romain** (`site.yaml` → `author.knows_about`) : en utiliser 2 ou 3 par article, naturellement,
+- **Les termes-clés de Romain** (`hugo.toml` → `knowsAbout`, par langue) : en utiliser 2 ou 3 par article, naturellement,
   dans le titre ou un H2 et dans le premier paragraphe. Jamais de bourrage.
 - **Les entités précises** plutôt que les généralités : noms d'outils, versions, volumes, durées.
 - **Tableaux** pour toute comparaison (options écartées vs retenue, avant/après).
 - **Sources** : lien vers la doc officielle ou l'étude quand une affirmation n'est pas du vécu.
-- Mettre à jour `updated:` quand on modifie un article — la fraîcheur compte pour les moteurs.
+- Mettre à jour `lastmod:` quand on modifie un article (dans les deux langues) — la fraîcheur compte pour les moteurs.
 
 ## Frontmatter (schéma)
 
@@ -54,7 +64,8 @@ Longueur cible : 1 000 à 1 800 mots. Ton : première personne, direct, phrases 
 title: "Titre qui nomme le problème, pas la techno"   # ≤ 70 caractères
 description: "Une phrase : problème + approche + résultat."  # ≤ 160 caractères, sert de meta description
 date: 2026-11-27
-updated: 2026-11-27          # optionnel
+lastmod: 2026-11-27          # optionnel, date de dernière modification
+slug: slug-court             # URL : /articles/slug-court/ (en anglais dans le fichier .en.md)
 tags: [Agentic coding, RAG]  # 2 à 4, réutiliser les sujets existants (voir /sujets/)
 keywords: [architecte IA, …] # optionnel, termes de recherche visés
 tldr: "Résumé en 1-2 phrases, affiché en tête et repris dans llms.txt."
@@ -83,9 +94,9 @@ draft: false                 # true = non publié
 
 ## Publier
 
-1. Écrire/modifier l'article dans `content/posts/`.
-2. Vérifier : `python3 build.py` (doit afficher le nombre d'articles sans erreur). Prévisualiser avec `--serve`.
+1. Écrire/modifier l'article dans `content/articles/` (version française + traduction `.en.md`).
+2. Vérifier : `hugo` (doit se terminer sans `ERROR`). Prévisualiser avec `hugo server -D`.
 3. `git add content/ && git commit -m "post: <titre>" && git push` sur `main`.
 4. Le Raspberry Pi récupère le dépôt toutes les 5 minutes, reconstruit, notifie IndexNow et publie sur LinkedIn.
 
-Ne modifie pas `build.py`, `templates/` ou `deploy/` dans le cadre d'une simple publication d'article.
+Ne modifie pas `hugo.toml`, `layouts/`, `i18n/` ou `deploy/` dans le cadre d'une simple publication d'article.
