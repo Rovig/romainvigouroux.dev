@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ cfg.title }}{% endblock %}
+{% block content %}
+<section class="hero wrap">
+  <p class="eyebrow">{{ cfg.author.job_title }} · Agentic coding</p>
+  <h1>{{ page.title if page and page.title else cfg.tagline }}</h1>
+  {% if page %}<div class="prose hero-prose">{{ page.html | safe }}</div>{% endif %}
+  <p class="hero-actions">
+    <a class="btn" href="/contact/">Soumettre un problème</a>
+    <a class="btn btn-ghost" href="/articles/">Lire les cas</a>
+  </p>
+</section>
+
+<section class="wrap expertise" aria-labelledby="exp-title">
+  <h2 id="exp-title">Ce sur quoi j'interviens</h2>
+  <ul class="chips">{% for k in cfg.author.knows_about %}<li>{{ k }}</li>{% endfor %}</ul>
+</section>
+
+<section class="wrap" aria-labelledby="latest-title">
+  <h2 id="latest-title">Derniers cas</h2>
+  {% include "_post_list.html" %}
+  {% if site.posts | length > 6 %}<p><a href="/articles/">Tous les articles →</a></p>{% endif %}
+</section>
+{% endblock %}

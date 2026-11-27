@@ -1,0 +1,15 @@
+<ol class="post-list">
+{% for p in posts %}
+  <li class="post-item">
+    <a class="post-link" href="{{ p.path }}">
+      <span class="post-date"><time datetime="{{ p.date.isoformat() }}">{{ p.date | date_fr }}</time> · {{ p.reading_min }} min</span>
+      <span class="post-title">{{ p.title }}</span>
+      {% if p.problem %}<span class="post-problem"><b>Problème :</b> {{ p.problem }}</span>
+      {% else %}<span class="post-problem">{{ p.description }}</span>{% endif %}
+    </a>
+    {% if p.tags %}<span class="tags">{% for t in p.tags %}<a class="tag" href="/sujets/{{ t | slug }}/">{{ t }}</a>{% endfor %}</span>{% endif %}
+  </li>
+{% else %}
+  <li class="muted">Premier article bientôt.</li>
+{% endfor %}
+</ol>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — {{ cfg.author.name }}{% endblock %}
+{% block description %}{{ page.description or cfg.description | trim }}{% endblock %}
+{% block og_type %}{{ 'profile' if page.slug == 'a-propos' else 'website' }}{% endblock %}
+{% block content %}
+<article class="wrap page">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a> / {{ page.title }}</nav>
+  <h1>{{ page.title }}</h1>
+  {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
+  <div class="prose">{{ page.html | safe }}</div>
+  {% if page.slug == 'contact' %}
+  <div class="contact-grid">
+    <a class="contact-card" href="mailto:{{ cfg.author.email }}?subject=Probl%C3%A8me%20%C3%A0%20r%C3%A9soudre"><span class="label">E-mail</span>{{ cfg.author.email }}</a>
+    <a class="contact-card" href="{{ cfg.contact.linkedin }}" rel="me"><span class="label">LinkedIn</span>Message direct</a>
+    {% if cfg.contact.calendar %}<a class="contact-card" href="{{ cfg.contact.calendar }}"><span class="label">Agenda</span>Réserver 30 min</a>{% endif %}
+  </div>
+  {% endif %}
+</article>
+{% endblock %}
