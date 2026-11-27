@@ -1,0 +1,13 @@
+[Unit]
+Description=romainvigouroux.dev — git pull, build, IndexNow, LinkedIn
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=blog
+Group=blog
+WorkingDirectory=/srv/romainvigouroux.dev/repo
+EnvironmentFile=-/etc/romainvigouroux/secrets.env
+ExecStart=/srv/romainvigouroux.dev/repo/deploy/update.sh
+Nice=10

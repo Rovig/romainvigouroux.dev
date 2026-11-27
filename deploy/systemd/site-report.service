@@ -1,0 +1,12 @@
+[Unit]
+Description=romainvigouroux.dev — rapport de trafic hebdomadaire
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=blog
+Group=blog
+WorkingDirectory=/srv/romainvigouroux.dev/repo
+EnvironmentFile=-/etc/romainvigouroux/secrets.env
+ExecStart=/usr/bin/python3 scripts/weekly_report.py --logs /var/log/caddy --out /srv/romainvigouroux.dev/reports --state /srv/romainvigouroux.dev/state --email
