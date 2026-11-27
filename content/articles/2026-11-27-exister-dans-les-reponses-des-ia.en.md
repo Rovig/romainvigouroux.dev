@@ -81,7 +81,7 @@ Conversation with Claude ──► git push (GitHub)
 
 **The Hugo static site generator**, a single binary, fast even on a Raspberry Pi. Its custom output formats produce,
 for each article, an HTML page, a raw Markdown version and a schema.org graph (`TechArticle`, `Person`, `FAQPage`,
-`BreadcrumbList`), in French and in English.
+`BreadcrumbList`), in French, English and German.
 
 **A single `Person` entity**, with a stable identifier and `sameAs` links to LinkedIn and Medium. Every article points
 to it as its author: that is what ties my content to my name.

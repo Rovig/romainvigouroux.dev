@@ -98,7 +98,7 @@ Conversation avec Claude ──► git push (GitHub)
 
 **Le générateur statique Hugo**, un seul exécutable, rapide même sur un Raspberry Pi. Ses « formats de sortie »
 personnalisés produisent pour chaque article une page HTML, une version Markdown brute et un graphe schema.org
-(`TechArticle`, `Person`, `FAQPage`, `BreadcrumbList`), en français et en anglais.
+(`TechArticle`, `Person`, `FAQPage`, `BreadcrumbList`), en français, en anglais et en allemand.
 
 **Une seule entité `Person`**, avec un identifiant stable et des liens `sameAs` vers LinkedIn et Medium. Chaque
 article y renvoie comme auteur : c'est ce qui permet de relier mes contenus à mon nom.
