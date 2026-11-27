@@ -177,7 +177,7 @@ def analyse(log_dir: Path, start: dt.datetime, mid: dt.datetime, end: dt.datetim
         if kind != "human" or status >= 400 or ASSET.search(path):
             continue
         b["pageviews"] += 1
-        ip = req.get("client_ip") or header(req, "Cf-Connecting-Ip") or req.get("remote_ip", "")
+        ip = header(req, "Cf-Connecting-Ip") or req.get("client_ip") or req.get("remote_ip", "")
         day_salt = ts.strftime("%Y-%m-%d") + os.environ.get("REPORT_SALT", "rv")
         b["visitors"].add(hashlib.sha256(f"{day_salt}|{ip}|{ua}".encode()).hexdigest()[:16])
         b["pages"][path] += 1
