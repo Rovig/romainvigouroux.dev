@@ -1,6 +1,6 @@
 # romainvigouroux.dev
 
-Blog d'architecte IA optimisé pour le GEO, construit avec [Hugo](https://gohugo.io), bilingue français / anglais,
+Blog d'architecte IA optimisé pour le GEO, construit avec [Hugo](https://gohugo.io), en français, anglais et allemand,
 auto-hébergé sur un Raspberry Pi 4, publié depuis Claude.
 
 ```text
@@ -18,7 +18,7 @@ Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → Ind
 
 | Élément | Rôle GEO |
 |---|---|
-| `hugo.toml`, `layouts/` | Pages HTML FR/EN + graphe schema.org (`Person` unique, `TechArticle`, `FAQPage`, `BreadcrumbList`), `hreflang` |
+| `hugo.toml`, `layouts/` | Pages HTML FR/EN/DE + graphe schema.org (`Person` unique, `TechArticle`, `FAQPage`, `BreadcrumbList`), `hreflang` |
 | `llms.txt`, `llms-full.txt`, `…/index.md` | Versions Markdown propres pour les agents et LLM (une par langue) |
 | `robots.txt` | Autorise explicitement les robots d'IA + `Content-Signal` |
 | `sitemap.xml`, `feed.xml` | Découverte et fraîcheur (`lastmod`, RSS complet) |
@@ -79,10 +79,10 @@ Un article part sur LinkedIn seulement si son frontmatter contient `linkedin: tr
 - **Bing Webmaster Tools** et **Google Search Console** : ajoute le domaine (vérification DNS via Cloudflare) et soumets `/sitemap.xml`.
 
 ### 7. Cohérence d'identité (aussi important que le site)
-- Bio LinkedIn, Medium et `hugo.toml → bio` : **mêmes mots-clés, même intitulé** (« Architecte IA » / « AI Architect »).
+- Bio LinkedIn, Medium et `hugo.toml → bio` : **mêmes mots-clés, même intitulé** (« Architecte IA » / « AI Architect » / « KI-Architekt »).
 - LinkedIn → *Coordonnées → Site web* et section *Sélection* : `https://romainvigouroux.dev`.
 - Republier sur Medium via **Import a story** (Medium pose alors un lien canonique vers ton site : pas de contenu dupliqué).
-- Dépose ta photo dans `static/romain-vigouroux.jpg` et complète la section *Parcours* de `content/a-propos.md` et `content/a-propos.en.md`.
+- Dépose ta photo dans `static/romain-vigouroux.jpg` et complète la section *Parcours* de `content/a-propos.md`, `.en.md` et `.de.md`.
 
 ---
 
@@ -91,7 +91,7 @@ Un article part sur LinkedIn seulement si son frontmatter contient `linkedin: tr
 **Avec Claude Code** (recommandé) : ouvre le dépôt, puis par exemple
 > « Écris un article sur la mission X : le client devait…, la contrainte était…, on a mis en place…, résultat… »
 
-Claude lit `CLAUDE.md`, crée `content/articles/AAAA-MM-JJ-slug.md` et sa traduction `.en.md`, vérifie le build et pousse. 5 minutes plus tard
+Claude lit `CLAUDE.md`, crée `content/articles/AAAA-MM-JJ-slug.md` et ses traductions `.en.md` et `.de.md`, vérifie le build et pousse. 5 minutes plus tard
 c'est en ligne, IndexNow est notifié et, si tu l'as validé (`linkedin: true`), le post LinkedIn part.
 
 **Depuis claude.ai** : relie le dépôt GitHub à la conversation et demande la même chose.
