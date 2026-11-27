@@ -3,7 +3,7 @@
 #
 #   sudo bash install.sh <URL_DU_DEPOT_GIT> [TOKEN_TUNNEL_CLOUDFLARE]
 #
-# Exemple : sudo bash install.sh git@github.com:romainvigouroux/romainvigouroux.dev.git eyJhIjoi...
+# Exemple : sudo bash install.sh https://github.com/Rovig/romainvigouroux.dev.git eyJhIjoi...
 # Le script est idempotent : on peut le relancer sans risque.
 set -euo pipefail
 
@@ -15,7 +15,19 @@ BASE=/srv/romainvigouroux.dev
 echo "==> Paquets système"
 apt-get update -qq
 apt-get install -y -qq git curl gnupg debian-keyring debian-archive-keyring apt-transport-https \
-  python3 python3-markdown python3-yaml python3-jinja2 python3-pygments unattended-upgrades
+  python3 unattended-upgrades
+
+echo "==> Hugo (version figée, vérifiée par somme SHA-256)"
+HUGO_VERSION=0.170.1   # pour mettre à jour : changer ce numéro et relancer install.sh
+if [[ "$(hugo version 2>/dev/null)" != *"v$HUGO_VERSION"* ]]; then
+  ARCH=$(dpkg --print-architecture)
+  DEB="hugo_${HUGO_VERSION}_linux-${ARCH}.deb"
+  URL="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
+  (cd /tmp && curl -fsSL -O "$URL/$DEB" && curl -fsSL -o hugo_checksums.txt "$URL/hugo_${HUGO_VERSION}_checksums.txt" \
+     && grep " ${DEB}\$" hugo_checksums.txt | sha256sum -c -)
+  apt-get install -y -qq "/tmp/$DEB" && rm -f "/tmp/$DEB" /tmp/hugo_checksums.txt
+fi
+hugo version
 
 echo "==> Caddy (dépôt officiel : la version Debian est trop ancienne pour la config)"
 if [[ ! -f /etc/apt/sources.list.d/caddy-stable.list ]]; then

@@ -19,7 +19,7 @@ git reset --quiet --hard origin/main
 COMMIT=$(git rev-parse --short HEAD)
 
 RELEASE="$RELEASES/$(date +%Y%m%d-%H%M%S)-$COMMIT"
-python3 build.py --out "$RELEASE"
+hugo --minify --gc --cleanDestinationDir --destination "$RELEASE" --cacheDir "$BASE/.hugo-cache"
 chmod -R a+rX "$RELEASE"
 
 # Bascule atomique : Caddy sert toujours une version complète.

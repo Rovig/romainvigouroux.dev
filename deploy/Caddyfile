@@ -12,7 +12,7 @@
 }
 
 http://:8080 {
-	bind 127.0.0.1 ::1
+	bind 127.0.0.1
 	root * /srv/romainvigouroux.dev/current
 	encode zstd gzip
 
@@ -26,18 +26,20 @@ http://:8080 {
 	# Types MIME explicites pour les fichiers destinés aux IA.
 	@markdown path *.md
 	header @markdown Content-Type "text/markdown; charset=utf-8"
-	@plaintext path /robots.txt /llms.txt /llms-full.txt
+	@plaintext path /robots.txt *llms.txt *llms-full.txt
 	header @plaintext Content-Type "text/plain; charset=utf-8"
 
 	# Cache : statiques longtemps, HTML court (les visites HTML remontent ainsi jusqu'au Pi et sont comptées).
-	@static path /static/*
+	@static path *.css *.svg *.png *.jpg *.jpeg *.webp *.woff2 *.ico
 	header @static Cache-Control "public, max-age=604800"
-	@pages not path /static/*
+	@pages not path *.css *.svg *.png *.jpg *.jpeg *.webp *.woff2 *.ico
 	header @pages Cache-Control "public, max-age=0, must-revalidate"
 
 	file_server
 
 	handle_errors {
+		@en path /en/*
+		rewrite @en /en/404.html
 		rewrite * /404.html
 		file_server
 	}
