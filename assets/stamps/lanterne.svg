@@ -1,0 +1,19 @@
+<!-- GEO : une lanterne de pierre qui éclaire la nuit — être visible là où l'on cherche. -->
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+  <circle cx="76" cy="20" r="9"/>
+  <path d="M8 26h36q5 0 5 4t-5 4H18q-4 0-4 3t4 3h26" />
+  <path d="M60 40h30q4 0 4 3.5T90 47H66"/>
+  <path d="M50 51L18 30M50 51L12 46M50 51L84 30M50 51L90 52" stroke-dasharray="1.5 3"/>
+</g>
+<path fill="currentColor" d="M0 86q12-9 26-6t24 1 26-5 24 6v18H0z"/>
+<g fill="currentColor">
+  <rect x="42" y="77" width="16" height="5"/>
+  <rect x="46.5" y="62" width="7" height="15"/>
+  <rect x="38" y="57" width="24" height="5"/>
+  <rect x="41" y="44" width="18" height="13"/>
+  <path d="M33 45l17-12 17 12z"/>
+  <circle cx="50" cy="31" r="3"/>
+</g>
+<rect class="p" x="45" y="47" width="10" height="7"/>
+<path d="M50 47v7" stroke="currentColor" stroke-width="1"/>
+<g fill="none" stroke="currentColor" stroke-width=".8"><path d="M4 92h18M30 95h22M60 91h16M82 95h14" class="p-stroke"/></g>

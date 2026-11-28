@@ -1,0 +1,21 @@
+<!-- Suivi de personnes : une averse sur un pont, chaque passant encadré et numéroté par le traceur. -->
+<g stroke="currentColor" stroke-width=".7" opacity=".9">
+  <path d="M6 0l-6 40M16 0l-6 40M26 0l-6 40M36 0l-6 40M46 0l-6 40M56 0l-6 40M66 0l-6 40M76 0l-6 40M86 0l-6 40M96 0l-6 40M106 0l-6 40"/>
+</g>
+<path fill="currentColor" d="M0 70h100v6H0z"/>
+<g stroke="currentColor" stroke-width="1.6"><path d="M8 76v24M30 76v24M52 76v24M74 76v24M96 76v24"/></g>
+<g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M0 92q8-3 16 0t16 0 16 0 16 0 16 0 16 0"/></g>
+<g fill="currentColor">
+  <path d="M8 48q9-8 18 0z"/><rect x="16.2" y="48" width="1.6" height="4"/><path d="M13 52h10l-1 18h-8z"/>
+  <path d="M38 44q10-9 20 0z"/><rect x="47.2" y="44" width="1.6" height="5"/><path d="M43 49h11l-1 21h-9z"/>
+  <path d="M70 50q8-7 16 0z"/><rect x="77.2" y="50" width="1.6" height="4"/><path d="M74 54h9l-1 16h-7z"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width=".8">
+  <rect x="5" y="40" width="24" height="32"/><rect x="35" y="36" width="26" height="36"/><rect x="67" y="42" width="22" height="30"/>
+</g>
+<g fill="currentColor" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="5" font-weight="700">
+  <rect x="5" y="34.5" width="9" height="5.5"/><rect x="35" y="30.5" width="9" height="5.5"/><rect x="67" y="36.5" width="9" height="5.5"/>
+</g>
+<g class="p-text" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="4.6" font-weight="700">
+  <text x="6.2" y="38.8">01</text><text x="36.2" y="34.8">02</text><text x="68.2" y="40.8">03</text>
+</g>

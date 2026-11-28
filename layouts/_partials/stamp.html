@@ -1,0 +1,26 @@
+{{- /*
+  Timbre d'un article : dessin dans l'esprit des estampes (assets/stamps/<clé>.svg),
+  bord dentelé, cadre, valeur faciale = temps de lecture, légende = premier sujet.
+  La clé vient de data/stamps.yaml, partagée par les trois langues. Décoratif (aria-hidden).
+  Paramètres : dict "page" (la page de l'article) "class" (classes CSS en plus).
+*/ -}}
+{{- $p := .page }}
+{{- $key := "" }}{{ with $p.File }}{{ $key = index hugo.Data.stamps .ContentBaseName }}{{ end }}
+{{- with $key }}{{ with resources.Get (printf "stamps/%s.svg" .) }}
+{{- $label := lower (i18n "articles") }}{{ with $p.Params.tags }}{{ $label = lower (index . 0) }}{{ end }}
+{{- $n := strings.RuneCount $label }}
+<svg class="stamp {{ $.class }}" viewBox="0 0 120 150" aria-hidden="true" focusable="false">
+  <mask id="perf-{{ $key }}">
+    <rect width="120" height="150" fill="#fff"/>
+    {{- range seq 0 16 }}<circle cx="{{ mul . 7.5 }}" cy="0" r="3.1"/><circle cx="{{ mul . 7.5 }}" cy="150" r="3.1"/>{{ end }}
+    {{- range seq 0 20 }}<circle cx="0" cy="{{ mul . 7.5 }}" r="3.1"/><circle cx="120" cy="{{ mul . 7.5 }}" r="3.1"/>{{ end }}
+  </mask>
+  <rect class="st-paper" width="120" height="150" mask="url(#perf-{{ $key }})"/>
+  <rect x="9" y="9" width="102" height="132" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <svg x="13" y="13" width="94" height="94" viewBox="0 0 100 100" overflow="hidden">{{ .Content | safeHTML }}</svg>
+  <path d="M13 111h94" stroke="currentColor" stroke-width="1.2"/>
+  <text class="st-value" x="13" y="133">{{ $p.ReadingTime }}<tspan font-size="7" dx="1.5">min</tspan></text>
+  <text class="st-label" x="107" y="124" text-anchor="end"{{ if gt (mul $n 4.2) 60 }} textLength="60" lengthAdjust="spacingAndGlyphs"{{ end }}>{{ $label }}</text>
+  <text class="st-small" x="107" y="134" text-anchor="end">rv · {{ $p.Date.Format "2006" }}</text>
+</svg>
+{{- end }}{{ end }}
