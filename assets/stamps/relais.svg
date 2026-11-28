@@ -1,0 +1,15 @@
+<!-- Carburants : la route du Tōkaidō, un relais au bord du chemin, sa bannière marquée d'une goutte. -->
+<path fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" d="M30 34l20-22 20 22"/>
+<path fill="currentColor" d="M42 21l8-9 8 9-3 2-2-2-3 3-2-3-3 3z"/>
+<g class="p" stroke="currentColor" stroke-width="1"><path d="M0 30h26q4 0 4 3t-4 3H0z"/><path d="M100 26H76q-4 0-4 3t4 3h24z"/></g>
+<path d="M0 44h100" stroke="currentColor" stroke-width="1"/>
+<path fill="currentColor" d="M44 44h12l30 56H14z"/>
+<path class="p" d="M48 44h4l14 56H34z"/>
+<g fill="currentColor">
+  <path d="M60 46h34l4 8H56z"/><rect x="60" y="54" width="32" height="16"/>
+</g>
+<g class="p"><rect x="64" y="57" width="8" height="8"/><rect x="78" y="57" width="10" height="13"/></g>
+<path d="M18 44v40" stroke="currentColor" stroke-width="1.6"/>
+<path fill="currentColor" d="M19 46h12v26H19z"/>
+<path class="p" d="M25 52q-4 6-4 9a4 4 0 0 0 8 0q0-3-4-9z"/>
+<g fill="currentColor"><path d="M4 74l4-14 4 14z"/><path d="M6 74h4v6H6z"/><path d="M90 78l4-12 4 12z"/></g>

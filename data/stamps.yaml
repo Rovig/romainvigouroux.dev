@@ -1,0 +1,9 @@
+# Timbre de chaque article : nom du fichier de contenu (sans langue ni extension) → dessin dans assets/stamps/.
+# Les traductions .en.md et .de.md utilisent automatiquement le même timbre.
+2026-11-27-exister-dans-les-reponses-des-ia: lanterne
+2026-11-27-corriger-des-copies-avec-un-llm: copies
+2026-11-27-traduire-un-livre-avec-un-llm-local: pont
+2026-11-27-suivi-de-personnes-yolo-deepsort-cpu: averse
+2026-11-27-generer-des-images-satellites-pix2pix: vue-du-ciel
+2026-11-27-disponibilite-carburants-donnees-ouvertes: relais
+2026-11-27-applications-garmin-monkey-c-agentic-coding: cadran

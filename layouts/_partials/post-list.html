@@ -1,15 +1,17 @@
 <ol class="post-list">
-{{- range . }}
-  <li class="post-item">
-    <a class="post-link" href="{{ .RelPermalink }}">
-      <span class="post-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time> · {{ i18n "reading_short" .ReadingTime }}</span>
-      <span class="post-title">{{ .Title }}</span>
-      {{- with .Params.problem }}<span class="post-problem"><b>{{ i18n "problem_short" }}</b> {{ . }}</span>
-      {{- else }}<span class="post-problem">{{ .Description }}</span>{{ end }}
-    </a>
-    {{- with .GetTerms "tags" }}<span class="tags">{{ range . }}<a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</span>{{ end }}
+{{- range $i, $page := . }}
+  {{- $side := cond (modBool $i 2) "right" "left" }}
+  <li class="g4 row stamp-{{ $side }}">
+    <div class="row-meta"><p><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><br>{{ i18n "reading_short" .ReadingTime }}</p>{{ if eq $side "left" }}{{ partial "stamp.html" (dict "page" $page) }}{{ end }}</div>
+    <div class="span2">
+      <a class="row-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{- with .Params.problem }}<p class="row-text">{{ . }}</p>{{ else }}<p class="row-text">{{ .Description }}</p>{{ end }}
+    </div>
+    <div class="row-side">
+      {{- with .GetTerms "tags" }}<p class="tags">{{ range . }}<a class="lbl" href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}</p>{{ end }}
+      {{- if eq $side "right" }}{{ partial "stamp.html" (dict "page" $page) }}{{ end }}</div>
   </li>
 {{- else }}
-  <li class="muted">{{ i18n "first_soon" }}</li>
+  <li class="g4 row"><p class="span4 muted">{{ i18n "first_soon" }}</p></li>
 {{- end }}
 </ol>

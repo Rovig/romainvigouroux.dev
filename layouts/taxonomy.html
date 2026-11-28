@@ -1,9 +1,9 @@
 {{ define "main" }}
-<section class="wrap">
-  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / {{ i18n "topics" }}</nav>
-  <h1>{{ i18n "topics" }}</h1>
-  <ul class="tag-cloud">
-  {{- range .Data.Terms.ByCount }}<li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }} <span>{{ .Count }}</span></a></li>
+<section class="list-page">
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower (i18n "topics") }}</p></nav>
+  <header class="g4 titleband"><h1 class="span3">{{ i18n "topics" }}</h1><p class="num">{{ len .Data.Terms }}</p></header>
+  <ul class="g4 topics">
+  {{- range .Data.Terms.ByCount }}<li><a href="{{ .Page.RelPermalink }}"><span>{{ lower .Page.LinkTitle }}</span><span class="topic-count">{{ .Count }}</span></a></li>
   {{- else }}<li class="muted">{{ i18n "no_topics" }}</li>{{ end }}
   </ul>
 </section>

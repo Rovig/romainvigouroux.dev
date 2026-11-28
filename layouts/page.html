@@ -1,14 +1,18 @@
 {{ define "main" }}
-<article class="wrap page">
-  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / {{ .Title }}</nav>
-  <h1>{{ .Title }}</h1>
-  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
-  <div class="prose">{{ .Content }}</div>
+<article class="page">
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower .Title }}</p></nav>
+  <header class="g4 titleband"><h1 class="span3">{{ .Title }}</h1>{{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}</header>
+  <div class="g4 body">
+    <aside class="toc-col"></aside>
+    <div class="span2 post-main">
+      <div class="prose">{{ .Content }}</div>
+    </div>
+  </div>
   {{- if eq .Params.schema "contact" }}
-  <div class="contact-grid">
-    <a class="contact-card" href="mailto:{{ site.Params.email }}?subject={{ i18n "mail_subject" | urlquery }}"><span class="label">{{ i18n "email" }}</span>{{ site.Params.email }}</a>
-    <a class="contact-card" href="{{ site.Params.linkedin }}" rel="me"><span class="label">LinkedIn</span>{{ i18n "direct_message" }}</a>
-    {{- with site.Params.calendar }}<a class="contact-card" href="{{ . }}"><span class="label">{{ i18n "calendar" }}</span>{{ i18n "book" }}</a>{{ end }}
+  <div class="g4 contact-row">
+    <a class="contact-card" href="mailto:{{ site.Params.email }}?subject={{ i18n "mail_subject" | urlquery }}"><span class="k">{{ i18n "email" }}</span>{{ site.Params.email }}</a>
+    <a class="contact-card" href="{{ site.Params.linkedin }}" rel="me"><span class="k">LinkedIn</span>{{ i18n "direct_message" }}</a>
+    {{- with site.Params.calendar }}<a class="contact-card" href="{{ . }}"><span class="k">{{ i18n "calendar" }}</span>{{ i18n "book" }}</a>{{ end }}
   </div>
   {{- end }}
 </article>

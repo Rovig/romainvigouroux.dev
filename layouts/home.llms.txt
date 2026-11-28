@@ -11,7 +11,7 @@ Other languages:
 {{- end }}{{ end }}
 
 ## Pages
-{{ range where site.RegularPages "Section" "ne" "articles" }}
+{{ range where (where site.RegularPages "Section" "ne" "articles") "Params.llms" "ne" false }}
 - [{{ .Title }}]({{ (.OutputFormats.Get "markdown").Permalink }}): {{ .Description }}
 {{- end }}
 

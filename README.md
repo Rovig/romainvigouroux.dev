@@ -1,13 +1,13 @@
 # romainvigouroux.dev
 
 Blog d'architecte IA optimisé pour le GEO, construit avec [Hugo](https://gohugo.io), en français, anglais et allemand,
-auto-hébergé sur un Raspberry Pi 4, publié depuis Claude.
+auto-hébergé sur un Raspberry Pi 3 B+, publié depuis Claude.
 
 ```text
 Claude (conversation / Claude Code) ──► git push ──► GitHub (dépôt = source de vérité)
                                                         │  toutes les 5 min
                                                         ▼
-Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → IndexNow → LinkedIn
+Raspberry Pi 3 B+ ── update.sh : git pull → hugo → bascule atomique → IndexNow → LinkedIn
      │
   Caddy 127.0.0.1:8090 (journaux JSON) ◄── cloudflared (tunnel sortant, aucun port ouvert)
                                                         │
@@ -34,31 +34,38 @@ Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → Ind
 C'est fait : https://github.com/Rovig/romainvigouroux.dev
 
 ### 2. Raspberry Pi
-1. Raspberry Pi Imager → **Raspberry Pi OS Lite (64-bit)**, active SSH, nom d'hôte `raspberrypi`. Branche-le en Ethernet.
-2. `ssh pi@raspberrypi.local`, puis :
+Le site s'installe sur le **Raspberry Pi 3 B+ qui sert déjà le site des peintures** (rbrtvgrx, robertvigouroux.com).
+Pas de nouvelle carte SD ni de réinstallation : on garde le système en place.
+
+1. Connecte-toi au 3B+ en SSH (`ssh <utilisateur>@<nom-du-3B+>.local`, comme pour le site des peintures), puis :
 ```bash
 git clone https://github.com/Rovig/romainvigouroux.dev.git /tmp/rv
-sudo bash /tmp/rv/deploy/install.sh https://github.com/Rovig/romainvigouroux.dev.git <TOKEN_TUNNEL>
+sudo bash /tmp/rv/deploy/install.sh https://github.com/Rovig/romainvigouroux.dev.git
 ```
-Le script installe Hugo (version figée, somme de contrôle vérifiée) **à part, dans `/opt/hugo`**, sans toucher au
-`hugo` du système dont dépend le site rbrtvgrx (0.111.3). Ce site-là est servi par **nginx** (ports 80 et 8080) :
-Caddy tourne à côté, sur `127.0.0.1:8090`, et le script s'arrête sans rien modifier si ce port est déjà pris. nginx
-n'est jamais touché. Il n'écrase rien d'existant : le site Caddy est un fichier
-séparé (`/etc/caddy/romainvigouroux.caddy`) ajouté par `import`, et si un tunnel cloudflared tourne déjà, il le laisse
-en place (il suffit d'ajouter le nom d'hôte `romainvigouroux.dev` → `127.0.0.1:8090` à ce tunnel). Si le dépôt est privé,
+Pas de token : le 3B+ a déjà un tunnel Cloudflare, celui du site des peintures, et on lui ajoute simplement un nom
+d'hôte (étape 3).
+
+Ce que le script laisse intact : **nginx** (ports 80 et 8080), le `hugo` du système (0.111.3) dont dépend le site des
+peintures, son webhook et son tunnel. Hugo 0.170.1 est installé **à part, dans `/opt/hugo`** (somme de contrôle
+vérifiée), en version `arm64` ou `arm` selon que le système est en 64 ou 32 bits. Caddy écoute sur `127.0.0.1:8090`
+et le script s'arrête sans rien modifier si ce port est déjà pris ; le site Caddy est un fichier séparé
+(`/etc/caddy/romainvigouroux.caddy`) ajouté par `import`, et Caddy est installé sans démarrer son site de démonstration
+sur le port 80 tenu par nginx. Si le dépôt est privé,
 utilise l'URL `git@github.com:Rovig/romainvigouroux.dev.git` et colle la **clé de déploiement** affichée dans
 GitHub → dépôt → Settings → Deploy keys (lecture seule).
-Tu peux lancer `install.sh` sans token puis le relancer à l'étape 3.
 
 ### 3. Cloudflare
-1. **Tunnel** : Zero Trust → Networks → Tunnels → *Create a tunnel* (cloudflared) → copie le token (c'est `<TOKEN_TUNNEL>`).
-   *Public hostname* : `romainvigouroux.dev` → `HTTP` → `127.0.0.1:8090` (pas `localhost` : Caddy n'écoute qu'en IPv4). Ajoute aussi `www` et une *Redirect Rule*
+1. **Tunnel** : Zero Trust → Networks → Tunnels → ouvre **le tunnel existant du 3B+** (celui de robertvigouroux.com,
+   sans rien y modifier d'autre) → *Public hostname* → *Add* : `romainvigouroux.dev` → `HTTP` → `127.0.0.1:8090` (pas `localhost` : Caddy n'écoute qu'en IPv4). Ajoute aussi `www` et une *Redirect Rule*
    `www.romainvigouroux.dev/*` → `https://romainvigouroux.dev/${1}` (301).
+   Un tunnel ne peut servir que des domaines du même compte Cloudflare : si robertvigouroux.com est dans un autre
+   compte que romainvigouroux.dev, ajoute d'abord romainvigouroux.dev au compte qui porte le tunnel.
 2. **Robots d'IA — le réglage le plus important.** Ton domaine est récent : Cloudflare applique par défaut des blocages
    de certains robots d'IA. Dans *Security → Settings → Bot traffic* (ou *AI Crawl Control*) :
    - **Block AI bots** : désactivé ; autoriser toutes les catégories (Search, Agent, Training).
    - **Manage your robots.txt** (robots.txt géré) : **désactivé** — sinon Cloudflare ajoute des `Disallow` devant le tien.
    - **Bot Fight Mode** : désactivé (il peut défier des robots légitimes).
+   Ces réglages se font **par domaine** : ne touche pas à ceux de robertvigouroux.com, qui doit rester fermé aux robots.
    Vérifie ensuite : `curl -s https://romainvigouroux.dev/robots.txt` doit commencer par `# robots.txt — romainvigouroux.dev`.
 3. **SSL/TLS** : mode *Full*. **Always Use HTTPS** : activé.
 4. **E-mail** : *Email Routing* → `contact@romainvigouroux.dev` vers ta boîte personnelle (gratuit).

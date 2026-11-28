@@ -1,4 +1,4 @@
-{{- range where site.RegularPages "Section" "ne" "articles" }}
+{{- range where (where site.RegularPages "Section" "ne" "articles") "Params.llms" "ne" false }}
 {{ partial "export.md" . }}
 ---
 {{ end }}

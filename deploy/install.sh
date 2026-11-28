@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Installation complète sur Raspberry Pi 4 (Raspberry Pi OS Lite 64 bits, Debian Bookworm ou plus récent).
+# Installation complète sur Raspberry Pi 3 B+ (ou plus récent) — Raspberry Pi OS Lite, 64 bits conseillé,
+# 32 bits accepté (Debian Bookworm ou plus récent).
 #
 #   sudo bash install.sh <URL_DU_DEPOT_GIT> [TOKEN_TUNNEL_CLOUDFLARE]
 #
@@ -14,7 +15,7 @@ BASE=/srv/romainvigouroux.dev
 PORT=8090   # doit correspondre à deploy/romainvigouroux.caddy
 
 echo "==> Vérification du port $PORT (avant toute modification du système)"
-# Le site rbrtvgrx est servi par nginx sur ce même Pi (port 8080 et :80) : on vérifie qu'il n'y a pas de collision.
+# Le site rbrtvgrx est servi par nginx sur ce même Pi (ports 80 et 8080) : on vérifie qu'il n'y a pas de collision.
 OCCUPANT=$(ss -ltnpH "sport = :$PORT" 2>/dev/null || true)
 if [[ -n "$OCCUPANT" && "$OCCUPANT" != *caddy* ]]; then
   echo "Le port $PORT est déjà utilisé par autre chose que Caddy :"
@@ -36,7 +37,12 @@ echo "==> Hugo (version figée, isolée dans /opt : le hugo du système n'est pa
 HUGO_VERSION=0.170.1   # pour mettre à jour : changer ce numéro et relancer install.sh
 HUGO_DIR=/opt/hugo/$HUGO_VERSION
 if [[ ! -x "$HUGO_DIR/hugo" ]]; then
-  ARCH=$(dpkg --print-architecture)
+  case "$(dpkg --print-architecture)" in
+    arm64) ARCH=arm64 ;;   # Raspberry Pi OS 64 bits (Pi 3 B+, Pi 4, Pi 5)
+    armhf) ARCH=arm ;;     # Raspberry Pi OS 32 bits : Hugo publie cette archive sous le nom linux-arm
+    amd64) ARCH=amd64 ;;
+    *) echo "Architecture non prise en charge : $(dpkg --print-architecture)"; exit 1 ;;
+  esac
   TGZ="hugo_${HUGO_VERSION}_linux-${ARCH}.tar.gz"
   URL="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
   (cd /tmp && curl -fsSL -O "$URL/$TGZ" && curl -fsSL -o hugo_checksums.txt "$URL/hugo_${HUGO_VERSION}_checksums.txt" \

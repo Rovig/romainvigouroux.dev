@@ -1,0 +1,19 @@
+<!-- Copies corrigées : un pupitre bas, une pile de copies, le pinceau et la pierre à encre. -->
+<g fill="none" stroke="currentColor" stroke-width="1" >
+  <path d="M6 6h88v34H6zM6 17h88M6 28h88M28 6v34M50 6v34M72 6v34"/>
+</g>
+<path fill="currentColor" d="M4 60h92l-6 8H10z"/>
+<g fill="currentColor"><rect x="14" y="68" width="5" height="24"/><rect x="81" y="68" width="5" height="24"/></g>
+<g class="p" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round">
+  <path d="M16 58l4-14h30l-4 14z"/>
+  <path d="M18 54l4-14h30l-4 14z"/>
+  <path d="M20 50l4-14h30l-4 14z"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+  <path d="M27 40h20M26 43.5h16M25 47h19"/>
+  <path d="M44 39.5l2.5 3 5-6.5" stroke-width="1.6"/>
+</g>
+<rect x="60" y="50" width="22" height="9" rx="1.5" fill="currentColor"/>
+<ellipse cx="71" cy="54.5" rx="6" ry="2.4" class="p"/>
+<path d="M58 30l26 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M82.5 47l4 3-1 1.6-4.4-2.4z" fill="currentColor"/>

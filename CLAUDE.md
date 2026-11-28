@@ -49,6 +49,25 @@ Le site est construit avec **Hugo** et existe en **français (langue principale)
 
 Longueur cible : 1 000 à 1 800 mots. Ton : première personne, direct, phrases courtes, zéro jargon gratuit.
 
+## Timbre de l'article (illustration)
+
+Chaque article a un **timbre** : une petite estampe noire sur papier, dans l'esprit des gravures japonaises,
+qui iconise l'histoire de l'article. Il s'affiche dans les listes (à droite puis à gauche, un article sur deux)
+et en tête de l'article.
+
+- Dessiner `assets/stamps/<clé>.svg` : uniquement le contenu du dessin (pas de balise `<svg>`), dans un carré
+  de 100 × 100, avec un commentaire en première ligne qui dit ce que le dessin représente.
+- Une seule encre : `currentColor` (traits et aplats noirs). Pour un détail clair posé sur du noir, la classe
+  `p` (remplissage papier), `p-stroke` (trait papier) ou `p-text` (texte papier). Aucune autre couleur.
+- Vocabulaire des estampes : aplats noirs, bandes de nuages arrondies, vagues à griffes, pluie en hachures,
+  soleil ou lune en cercle, monts et pins stylisés. Une scène simple, lisible à 90 px de large.
+- Un élément concret de l'histoire doit s'y reconnaître (le pont pour une traduction, l'averse et les cadres
+  numérotés pour le suivi de personnes…). Pas de personnage ni de logo existant.
+- Si le dessin utilise un `clipPath` ou un `mask`, lui donner un id préfixé par la clé (`<clé>-clip`).
+- Ajouter la ligne `<nom du fichier sans .md>: <clé>` dans `data/stamps.yaml` : les traductions utilisent
+  automatiquement le même timbre. Le cadre, la dentelure, la valeur (temps de lecture) et la légende (premier
+  sujet) sont ajoutés par `layouts/_partials/stamp.html`.
+
 ## Règles GEO (lisibilité par les IA)
 
 - **Titres H2/H3 formulés comme des questions ou des affirmations nettes**, jamais « Introduction » ou « Conclusion ».
@@ -100,7 +119,7 @@ draft: false                 # true = non publié
 
 1. Écrire/modifier l'article dans `content/articles/` (version française + traductions `.en.md` et `.de.md`).
 2. Vérifier : `hugo` (doit se terminer sans `ERROR`). Prévisualiser avec `hugo server -D`.
-3. `git add content/ && git commit -m "post: <titre>" && git push` sur `main`.
+3. `git add content/ assets/stamps/ data/stamps.yaml && git commit -m "post: <titre>" && git push` sur `main`.
 4. Le Raspberry Pi récupère le dépôt toutes les 5 minutes, reconstruit, notifie IndexNow et publie sur LinkedIn.
 
 Ne modifie pas `hugo.toml`, `layouts/`, `i18n/` ou `deploy/` dans le cadre d'une simple publication d'article.

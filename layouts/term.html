@@ -1,8 +1,7 @@
 {{ define "main" }}
-<section class="wrap">
-  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ i18n "topics" }}</a></nav>
-  <h1>{{ i18n "topic_prefix" }} {{ .Title }}</h1>
-  <p class="lede">{{ i18n "topic_intro" }} {{ .Title }}.</p>
+<section class="list-page">
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ lower (i18n "topics") }}</a></p></nav>
+  <header class="g4 titleband"><h1 class="span3">{{ i18n "topic_prefix" }} {{ .Title }}</h1><p class="num">{{ len .Pages }}</p><p class="lede span3">{{ i18n "topic_intro" }} {{ .Title }}.</p></header>
   {{ partial "post-list.html" .Pages }}
 </section>
 {{ end }}
