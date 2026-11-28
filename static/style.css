@@ -230,3 +230,24 @@ pre code { border: 0; padding: 0; font-size: inherit; color: inherit; }
 @media print {
   .topbar, .cover, .box-band, .toc-col, .pager { display: none; }
 }
+
+/* ---------- timbres : petites estampes, une par article ---------- */
+.stamp { display: block; width: clamp(84px, 8.6vw, 120px); height: auto; color: #161615; margin: 16px 0 0; filter: drop-shadow(0 0 .5px rgba(0,0,0,.7)) drop-shadow(0 1px 1.5px rgba(0,0,0,.12)); }
+.stamp .st-paper, .stamp .p { fill: #e9e5db; }
+.stamp .p-text { fill: #e9e5db; }
+.stamp .p-stroke { stroke: #e9e5db; }
+.stamp text { font-family: var(--sans); font-weight: 400; }
+.stamp .st-value { font-size: 20px; font-weight: 700; letter-spacing: -.04em; fill: currentColor; }
+.stamp .st-label { font-size: 7.4px; font-weight: 700; fill: currentColor; }
+.stamp .st-small { font-size: 5px; fill: currentColor; }
+.row-meta p, .row-side p { margin: 0; }
+.row-side .stamp { margin-left: auto; }
+.row-side .tags { justify-content: flex-end; }
+.title-side { display: flex; flex-direction: column; gap: 18px; }
+.stamp-lg { width: clamp(110px, 11vw, 156px); margin: 0; }
+.row > .row-side { display: flex; flex-direction: column; align-items: flex-end; }
+@media (max-width: 900px) {
+  .stamp { width: 84px; }
+  .title-side { flex-direction: row; align-items: flex-end; gap: var(--gap); grid-column: 1 / -1; }
+  .stamp-lg { width: 96px; flex: none; }
+}
