@@ -119,7 +119,7 @@ draft: false                 # true = non publié
 
 1. Écrire/modifier l'article dans `content/articles/` (version française + traductions `.en.md` et `.de.md`).
 2. Vérifier : `hugo` (doit se terminer sans `ERROR`). Prévisualiser avec `hugo server -D`.
-3. `git add content/ && git commit -m "post: <titre>" && git push` sur `main`.
+3. `git add content/ assets/stamps/ data/stamps.yaml && git commit -m "post: <titre>" && git push` sur `main`.
 4. Le Raspberry Pi récupère le dépôt toutes les 5 minutes, reconstruit, notifie IndexNow et publie sur LinkedIn.
 
 Ne modifie pas `hugo.toml`, `layouts/`, `i18n/` ou `deploy/` dans le cadre d'une simple publication d'article.
