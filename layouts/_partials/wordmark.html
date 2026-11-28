@@ -1,0 +1,11 @@
+{{- /*
+  Nom en bas de casse, étiré exactement sur toute la largeur (SVG textLength).
+  Taille calculée sur la longueur du texte pour que l'étirement reste invisible.
+  Décoratif : le vrai nom est dans le titre et les données structurées.
+*/ -}}
+{{- $t := lower .text }}
+{{- $n := strings.RuneCount $t }}
+{{- $fs := div 1000.0 (mul $n 0.535) }}
+<svg class="wordmark" viewBox="0 0 1000 {{ math.Round (mul $fs 0.98) }}" aria-hidden="true" focusable="false">
+  <text x="0" y="{{ math.Round (mul $fs 0.755) }}" font-size="{{ math.Round $fs }}" textLength="1000" lengthAdjust="spacingAndGlyphs">{{ $t }}</text>
+</svg>

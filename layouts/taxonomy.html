@@ -1,11 +1,9 @@
 {{ define "main" }}
 <section class="list-page">
-  <header class="page-head">
-    <div class="cell page-head-side"><nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower (i18n "topics") }}</nav><p class="count">{{ len .Data.Terms }}</p></div>
-    <div class="cell page-head-main"><h1>{{ i18n "topics" }}</h1></div>
-  </header>
-  <ul class="cells cells-topics">
-  {{- range .Data.Terms.ByCount }}<li><a href="{{ .Page.RelPermalink }}"><span class="topic-name">{{ lower .Page.LinkTitle }}</span><span class="topic-count">{{ .Count }}</span></a></li>
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower (i18n "topics") }}</p></nav>
+  <header class="g4 titleband"><h1 class="span3">{{ i18n "topics" }}</h1><p class="num">{{ len .Data.Terms }}</p></header>
+  <ul class="g4 topics">
+  {{- range .Data.Terms.ByCount }}<li><a href="{{ .Page.RelPermalink }}"><span>{{ lower .Page.LinkTitle }}</span><span class="topic-count">{{ .Count }}</span></a></li>
   {{- else }}<li class="muted">{{ i18n "no_topics" }}</li>{{ end }}
   </ul>
 </section>

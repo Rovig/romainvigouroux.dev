@@ -1,14 +1,14 @@
 <ol class="post-list">
 {{- range . }}
-  <li class="post-item">
-    <span class="post-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_medium" }}</time><br>{{ i18n "reading_short" .ReadingTime }}</span>
-    <div class="post-main">
-      <a class="post-link" href="{{ .RelPermalink }}"><span class="post-title">{{ .Title }}</span></a>
-      {{- with .Params.problem }}<p class="post-problem">{{ . }}</p>{{ else }}<p class="post-problem">{{ .Description }}</p>{{ end }}
+  <li class="g4 row">
+    <p class="row-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><br>{{ i18n "reading_short" .ReadingTime }}</p>
+    <div class="span2">
+      <a class="row-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{- with .Params.problem }}<p class="row-text">{{ . }}</p>{{ else }}<p class="row-text">{{ .Description }}</p>{{ end }}
     </div>
-    {{- with .GetTerms "tags" }}<p class="tags">{{ range . }}<a class="tag" href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}</p>{{ else }}<span></span>{{ end }}
+    {{- with .GetTerms "tags" }}<p class="tags">{{ range . }}<a class="lbl" href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}</p>{{ else }}<span></span>{{ end }}
   </li>
 {{- else }}
-  <li class="post-item muted">{{ i18n "first_soon" }}</li>
+  <li class="g4 row"><p class="span4 muted">{{ i18n "first_soon" }}</p></li>
 {{- end }}
 </ol>

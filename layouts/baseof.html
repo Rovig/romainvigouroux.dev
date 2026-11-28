@@ -39,44 +39,24 @@
 </head>
 <body>
 <a class="skip" href="#contenu">{{ i18n "skip" }}</a>
-<header class="site-header">
-  <div class="header-grid">
-    <a class="brand cell" href="{{ site.Home.RelPermalink }}" rel="home">
-      <span class="brand-name">{{ lower site.Params.author }}</span>
-      <span class="brand-role">{{ lower site.Params.jobTitle }}</span>
-    </a>
-    <nav class="cell nav" aria-label="{{ i18n "nav_label" }}">
-      {{- with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "articles") }}</a>{{ end }}
-      {{- with site.GetPage "/tags" }}<a class="nav-topics" href="{{ .RelPermalink }}">{{ lower (i18n "topics") }}</a>{{ end }}
-      {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "about") }}</a>{{ end }}
-      {{- with site.GetPage "/contact" }}<a class="nav-cta" href="{{ .RelPermalink }}">{{ lower (i18n "contact") }}</a>{{ end }}
-    </nav>
-    {{- $page := . }}
-    <p class="cell lang-switch">
-    {{- range hugo.Sites }}
-      {{- $lang := .Language.Lang }}
-      {{- if eq $lang site.Language.Lang }}<span aria-current="true" lang="{{ $lang }}">{{ $lang }}</span>
-      {{- else }}{{ $href := .Home.RelPermalink }}
-        {{- range $page.Translations }}{{ if eq .Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
-        <a href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ .Language.Label }}">{{ $lang }}</a>
-      {{- end }}
-    {{- end }}
-    </p>
-  </div>
-</header>
+{{ partial "topbar.html" (dict "page" .) }}
 <main id="contenu">
 {{ block "main" . }}{{ end }}
 </main>
 <footer class="site-footer">
-  <div class="footer-grid">
-    <p class="cell"><strong>{{ site.Params.author }}</strong><br>{{ site.Params.jobTitle }}. {{ site.Params.tagline }}</p>
-    <p class="cell footer-links">
+  <div class="g4 metarow">
+    <p><span class="k">{{ i18n "based" }}</span>{{ site.Params.location }}</p>
+    <p><span class="k">{{ i18n "role" }}</span>{{ site.Params.jobTitle }}</p>
+    <p><span class="k">{{ i18n "updated" }}</span><time datetime="{{ site.Lastmod.Format "2006-01-02" }}">{{ site.Lastmod.Format "2006.01.02" }}</time></p>
+    <p><span class="k">{{ i18n "languages" }}</span>{{ range $i, $s := hugo.Sites }}{{ if $i }} · {{ end }}{{ $s.Language.Lang }}{{ end }}</p>
+  </div>
+  <div class="g4 foot-links">
+    <p class="span2">
       {{- range site.Params.sameAs }}<a href="{{ . }}" rel="me">{{ index (split . "/") 2 | replaceRE "^www\\." "" }}</a>{{ end }}
       <a href="{{ site.Home.RelPermalink }}feed.xml">rss</a><a href="{{ site.Home.RelPermalink }}llms.txt">llms.txt</a>
     </p>
-    <p class="cell muted">© {{ now.Year }} {{ site.Params.author }}<br>{{ i18n "footer_host" }}</p>
+    <p class="span2 muted">© {{ now.Year }} {{ site.Params.author }}. {{ i18n "footer_host" }}</p>
   </div>
-  <p class="footer-mark" aria-hidden="true">{{ lower site.Params.author }}</p>
 </footer>
 </body>
 </html>

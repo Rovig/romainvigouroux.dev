@@ -1,0 +1,22 @@
+<header class="topbar">
+  <div class="g4">
+    <a class="brand" href="{{ site.Home.RelPermalink }}" rel="home">{{ lower site.Params.author }}</a>
+    <nav class="nav span2" aria-label="{{ i18n "nav_label" }}">
+      {{- with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "articles") }}</a>{{ end }}
+      {{- with site.GetPage "/tags" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "topics") }}</a>{{ end }}
+      {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "about") }}</a>{{ end }}
+      {{- with site.GetPage "/contact" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "contact") }}</a>{{ end }}
+    </nav>
+    {{- $page := .page }}
+    <p class="lang-switch">
+    {{- range hugo.Sites }}
+      {{- $lang := .Language.Lang }}
+      {{- if eq $lang site.Language.Lang }}<span aria-current="true" lang="{{ $lang }}">{{ $lang }}</span>
+      {{- else }}{{ $href := .Home.RelPermalink }}
+        {{- range $page.Translations }}{{ if eq .Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+        <a href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ .Language.Label }}">{{ $lang }}</a>
+      {{- end }}
+    {{- end }}
+    </p>
+  </div>
+</header>
