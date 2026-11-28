@@ -55,7 +55,9 @@
       {{- range site.Params.sameAs }}<a href="{{ . }}" rel="me">{{ index (split . "/") 2 | replaceRE "^www\\." "" }}</a>{{ end }}
       <a href="{{ site.Home.RelPermalink }}feed.xml">rss</a><a href="{{ site.Home.RelPermalink }}llms.txt">llms.txt</a>
     </p>
-    <p class="span2 muted">© {{ now.Year }} {{ site.Params.author }}. {{ i18n "footer_host" }}</p>
+    <p class="span2 muted">© {{ now.Year }} {{ site.Params.author }}. {{ i18n "footer_host" }}
+      {{- with site.GetPage "/mentions-legales" }}<br><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+      {{- with site.GetPage "/confidentialite" }} · <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</p>
   </div>
 </footer>
 </body>
