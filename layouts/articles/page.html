@@ -11,51 +11,47 @@
 {{ end }}
 {{ define "main" }}
 <article class="post">
-  <header class="post-head">
-    <div class="post-head-side cell">
-      <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ lower (i18n "articles") }}</a></nav>
-      <p class="meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
-        {{- if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}<br>{{ i18n "updated_on" }} <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod | time.Format ":date_long" }}</time>{{ end }}
-        <br>{{ i18n "reading_time" .ReadingTime }}
-        <br>{{ i18n "by" }} {{ with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}" rel="author">{{ site.Params.author }}</a>{{ end }}
-      </p>
-      {{- with .GetTerms "tags" }}<p class="tags">{{ range . }}<a href="{{ .RelPermalink }}" class="tag">{{ lower .LinkTitle }}</a>{{ end }}</p>{{ end }}
-    </div>
-    <div class="post-head-main cell">
-      <h1>{{ .Title }}</h1>
-      <p class="lede">{{ .Description }}</p>
-    </div>
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ lower (i18n "articles") }}</a></p></nav>
+  <header class="g4 titleband">
+    <h1 class="span3">{{ .Title }}</h1>
+    <p class="lede">{{ .Description }}</p>
   </header>
+  <div class="g4 metarow">
+    <p><span class="k">{{ i18n "published" }}</span><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+      {{- if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}<br>{{ i18n "updated_on" }} <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod | time.Format ":date_long" }}</time>{{ end }}</p>
+    <p><span class="k">{{ i18n "reading" }}</span>{{ i18n "reading_short" .ReadingTime }}</p>
+    <p><span class="k">{{ i18n "author_label" }}</span>{{ with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}" rel="author">{{ site.Params.author }}</a>{{ end }}</p>
+    <p><span class="k">{{ i18n "topics" }}</span>{{ range $i, $t := .GetTerms "tags" }}{{ if $i }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ lower $t.LinkTitle }}</a>{{ end }}</p>
+  </div>
 
-  {{ partial "glyph.html" (dict "text" (lower (substr .Title 0 1)) "class" "glyph--strip") }}
+  {{- $box := i18n "articles" }}{{ with .Params.tags }}{{ $box = index . 0 }}{{ end }}
+  <div class="box-band">{{ partial "boxword.html" (dict "text" $box) }}</div>
 
-  <div class="post-body">
-    <aside class="post-side">
+  {{- $p := .Params }}
+  {{- if or $p.tldr $p.problem }}
+  <aside class="case" aria-label="{{ i18n "case_card" }}">
+    {{- with $p.tldr }}<div class="g4 tldr-band"><p><span class="lbl">{{ i18n "tldr" }}</span></p><p class="span3 tldr">{{ . }}</p></div>{{ end }}
+    <dl class="g4 case4">
+      {{- with $p.problem }}<div><dt><span class="lbl">{{ i18n "problem" }}</span></dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with $p.context }}<div><dt><span class="lbl">{{ i18n "context" }}</span></dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with $p.constraints }}<div><dt><span class="lbl">{{ i18n "constraints" }}</span></dt><dd><ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul></dd></div>{{ end }}
+      {{- with $p.outcome }}<div><dt><span class="lbl">{{ i18n "outcome" }}</span></dt><dd>{{ . }}</dd></div>{{ end }}
+    </dl>
+    {{- with $p.stack }}<div class="g4 stack-row"><p><span class="lbl">{{ i18n "stack" }}</span></p><p class="span3 stack">{{ range . }}<code>{{ . }}</code>{{ end }}</p></div>{{ end }}
+  </aside>
+  {{- end }}
+
+  <div class="g4 body">
+    <aside class="toc-col">
       {{- if gt (len .Fragments.Headings) 0 }}{{ $h2 := 0 }}{{ range .Fragments.HeadingsMap }}{{ if eq .Level 2 }}{{ $h2 = add $h2 1 }}{{ end }}{{ end }}
       {{- if gt $h2 2 }}
       <nav class="toc" aria-label="{{ i18n "toc" }}">
-        <p class="label">{{ i18n "toc" }}</p>
+        <p><span class="lbl">{{ i18n "toc" }}</span></p>
         {{ .TableOfContents }}
       </nav>
       {{- end }}{{ end }}
     </aside>
-
-    <div class="post-main">
-      {{- $p := .Params }}
-      {{- if or $p.tldr $p.problem }}
-      <aside class="case-card" aria-label="{{ i18n "case_card" }}">
-        {{- with $p.tldr }}<p class="tldr"><span class="label">{{ i18n "tldr" }}</span>{{ . }}</p>{{ end }}
-        <dl>
-          {{- with $p.problem }}<div><dt>{{ i18n "problem" }}</dt><dd>{{ . }}</dd></div>{{ end }}
-          {{- with $p.context }}<div><dt>{{ i18n "context" }}</dt><dd>{{ . }}</dd></div>{{ end }}
-          {{- with $p.constraints }}<div><dt>{{ i18n "constraints" }}</dt><dd><ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul></dd></div>{{ end }}
-          {{- with $p.stack }}<div><dt>{{ i18n "stack" }}</dt><dd class="stack">{{ range . }}<code>{{ . }}</code>{{ end }}</dd></div>{{ end }}
-          {{- with $p.outcome }}<div><dt>{{ i18n "outcome" }}</dt><dd>{{ . }}</dd></div>{{ end }}
-        </dl>
-      </aside>
-      {{- end }}
-
+    <div class="span2 post-main">
       <div class="prose">
         {{ .Content }}
       </div>
@@ -71,17 +67,17 @@
 
       <section class="author-box" aria-label="{{ i18n "about_author" }}">
         {{- if fileExists (path.Join "static" site.Params.image) }}
-        <img src="{{ site.Params.image | relURL }}" alt="{{ i18n "portrait" }} {{ site.Params.author }}" width="96" height="96" loading="lazy">
+        <img src="{{ site.Params.image | relURL }}" alt="{{ i18n "portrait" }} {{ site.Params.author }}" width="88" height="88" loading="lazy">
         {{- end }}
         <div>
           <p><strong>{{ site.Params.author }}</strong> — {{ site.Params.bio }}</p>
-          {{ with site.GetPage "/contact" }}<p><a class="btn" href="{{ .RelPermalink }}">{{ site.Params.cta }} →</a></p>{{ end }}
+          {{ with site.GetPage "/contact" }}<p><a class="btn" href="{{ .RelPermalink }}">{{ site.Params.cta }}</a></p>{{ end }}
         </div>
       </section>
 
       {{- $related := first 3 (where (site.RegularPages.Related .) "Section" "articles") }}
       {{- with $related }}
-      <section class="related"><h2>{{ i18n "related" }}</h2>
+      <section class="related"><h2><span class="lbl">{{ i18n "related" }}</span></h2>
         <ul>{{ range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}</ul>
       </section>
       {{- end }}
