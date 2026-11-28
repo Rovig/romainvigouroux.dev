@@ -15,7 +15,7 @@ BASE=/srv/romainvigouroux.dev
 PORT=8090   # doit correspondre à deploy/romainvigouroux.caddy
 
 echo "==> Vérification du port $PORT (avant toute modification du système)"
-# Si un autre site tourne sur cette machine (ex. rbrtvgrx, servi par nginx sur :80 et :8080), on évite toute collision.
+# Le site rbrtvgrx est servi par nginx sur ce même Pi (ports 80 et 8080) : on vérifie qu'il n'y a pas de collision.
 OCCUPANT=$(ss -ltnpH "sport = :$PORT" 2>/dev/null || true)
 if [[ -n "$OCCUPANT" && "$OCCUPANT" != *caddy* ]]; then
   echo "Le port $PORT est déjà utilisé par autre chose que Caddy :"
