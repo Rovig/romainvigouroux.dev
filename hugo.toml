@@ -1,0 +1,162 @@
+# Configuration Hugo de romainvigouroux.dev — source de vérité pour l'identité (entité « Romain Vigouroux »).
+# Garder ces informations IDENTIQUES partout (LinkedIn, Medium, GitHub) : la cohérence d'entité
+# est ce qui permet aux moteurs et aux LLM de relier tes contenus à ta personne.
+
+baseURL = "https://romainvigouroux.dev/"
+defaultContentLanguage = "fr"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = true
+timeZone = "Europe/Paris"
+summaryLength = 40
+titleCaseStyle = "none"
+capitalizeListTitles = false
+removePathAccents = true
+
+[params]
+  author = "Romain Vigouroux"
+  email = "contact@romainvigouroux.dev"        # à créer via Cloudflare Email Routing (gratuit)
+  image = "/romain-vigouroux.jpg"              # photo pro carrée (≥ 400 px) à déposer dans static/
+  linkedin = "https://www.linkedin.com/in/vigouroux-romain-ai-architect"
+  # calendar = "https://cal.com/TON-LIEN"
+  # Profils qui « prouvent » que c'est la même personne (schema.org sameAs).
+  sameAs = [
+    "https://www.linkedin.com/in/vigouroux-romain-ai-architect",
+    "https://medium.com/@say_yellow",
+    "https://github.com/Rovig",
+  ]
+  # Clé IndexNow (Bing — qui alimente aussi la recherche de ChatGPT et Copilot).
+  # Génère-la avec : python3 -c "import uuid; print(uuid.uuid4().hex)"
+  indexnowKey = ""
+
+[languages]
+  [languages.fr]
+    locale = "fr-FR"
+    label = "Français"
+    title = "Romain Vigouroux — Architecte IA"
+    weight = 1
+    [languages.fr.params]
+      jobTitle = "Architecte IA"
+      tagline = "Des problèmes complexes, des architectures qui y répondent."
+      description = "Romain Vigouroux, architecte IA et praticien de l'agentic coding. Retours d'expérience sur des problèmes métier complexes résolus par des architectures IA sobres : agents, RAG, MCP, automatisation."
+      # Une phrase factuelle, réutilisable telle quelle par un LLM pour te présenter.
+      bio = "Romain Vigouroux est architecte IA. Il pratique l'agentic coding au quotidien et conçoit des architectures IA (agents, RAG, MCP, automatisations) qui répondent à des besoins métier complexes identifiés avec ses clients."
+      location = "France"
+      cta = "Un problème métier qui résiste ? Décrivez-le moi en trois lignes."
+      # Les termes auxquels ton nom doit être associé (tes « X, Y, Z »).
+      knowsAbout = ["Architecture IA", "Agentic coding", "Systèmes multi-agents", "RAG (Retrieval-Augmented Generation)", "Model Context Protocol (MCP)", "Automatisation de processus métier", "Claude Code", "GEO (Generative Engine Optimization)"]
+    [languages.fr.permalinks.page]
+      articles = "/articles/:slug/"
+    [languages.fr.permalinks.taxonomy]
+      tags = "/sujets/"
+    [languages.fr.permalinks.term]
+      tags = "/sujets/:slug/"
+
+  [languages.en]
+    locale = "en-US"
+    label = "English"
+    title = "Romain Vigouroux — AI Architect"
+    weight = 2
+    [languages.en.params]
+      jobTitle = "AI Architect"
+      tagline = "Complex problems, architectures that answer them."
+      description = "Romain Vigouroux, AI architect and agentic coding practitioner. Field notes on complex business problems solved with lean AI architectures: agents, RAG, MCP, automation."
+      bio = "Romain Vigouroux is an AI architect based in France. He practices agentic coding daily and designs AI architectures (agents, RAG, MCP, automation) that solve complex business needs identified with his clients."
+      location = "France"
+      cta = "A business problem that won't budge? Describe it to me in three lines."
+      knowsAbout = ["AI architecture", "Agentic coding", "Multi-agent systems", "RAG (Retrieval-Augmented Generation)", "Model Context Protocol (MCP)", "Business process automation", "Claude Code", "GEO (Generative Engine Optimization)"]
+    [languages.en.permalinks.page]
+      articles = "/articles/:slug/"
+    [languages.en.permalinks.taxonomy]
+      tags = "/topics/"
+    [languages.en.permalinks.term]
+      tags = "/topics/:slug/"
+
+  [languages.de]
+    locale = "de-DE"
+    label = "Deutsch"
+    title = "Romain Vigouroux — KI-Architekt"
+    weight = 3
+    [languages.de.params]
+      jobTitle = "KI-Architekt"
+      tagline = "Komplexe Probleme, Architekturen, die sie lösen."
+      description = "Romain Vigouroux, KI-Architekt und Praktiker des Agentic Coding. Erfahrungsberichte zu komplexen fachlichen Problemen, gelöst mit schlanken KI-Architekturen: Agenten, RAG, MCP, Automatisierung."
+      bio = "Romain Vigouroux ist KI-Architekt mit Sitz in Frankreich. Er praktiziert täglich Agentic Coding und entwirft KI-Architekturen (Agenten, RAG, MCP, Automatisierung), die komplexe fachliche Anforderungen seiner Kunden lösen."
+      location = "Frankreich"
+      cta = "Ein fachliches Problem, das sich nicht lösen lässt? Beschreiben Sie es mir in drei Zeilen."
+      knowsAbout = ["KI-Architektur", "Agentic Coding", "Multi-Agenten-Systeme", "RAG (Retrieval-Augmented Generation)", "Model Context Protocol (MCP)", "Automatisierung von Geschäftsprozessen", "Claude Code", "GEO (Generative Engine Optimization)"]
+    [languages.de.permalinks.page]
+      articles = "/artikel/:slug/"
+    [languages.de.permalinks.section]
+      articles = "/artikel/"
+    [languages.de.permalinks.taxonomy]
+      tags = "/themen/"
+    [languages.de.permalinks.term]
+      tags = "/themen/:slug/"
+
+[taxonomies]
+  tag = "tags"
+
+# --- Sorties destinées aux machines (GEO) ---------------------------------------------
+[mediaTypes."text/markdown"]
+  suffixes = ["md"]
+
+[outputFormats.rss]
+  baseName = "feed"
+[outputFormats.llms]
+  mediaType = "text/plain"
+  baseName = "llms"
+  isPlainText = true
+  notAlternative = true
+[outputFormats.llmsfull]
+  mediaType = "text/plain"
+  baseName = "llms-full"
+  isPlainText = true
+  notAlternative = true
+[outputFormats.manifest]
+  mediaType = "application/json"
+  baseName = "manifest"
+  isPlainText = true
+  notAlternative = true
+[outputFormats.markdown]
+  mediaType = "text/markdown"
+  baseName = "index"
+  isPlainText = true
+
+[outputs]
+  home = ["html", "rss", "llms", "llmsfull", "manifest"]
+  section = ["html", "rss"]
+  page = ["html", "markdown"]
+  taxonomy = ["html"]
+  term = ["html"]
+
+[markup]
+  [markup.goldmark.parser]
+    autoHeadingIDType = "github-ascii"
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.highlight]
+    style = "monokai"
+    noClasses = true
+    guessSyntax = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 2
+    ordered = true
+
+[related]
+  includeNewer = true
+  threshold = 50
+  toLower = true
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "keywords"
+    weight = 60
+
+[sitemap]
+  changeFreq = ""
+  priority = -1
+
+[minify.tdewolff.html]
+  keepWhitespace = false

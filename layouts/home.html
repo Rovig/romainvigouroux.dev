@@ -1,0 +1,34 @@
+{{ define "main" }}
+<section class="cover" aria-label="{{ site.Params.author }}">
+  <div class="cover-strip">{{ partial "wordmark.html" (dict "text" site.Params.author) }}</div>
+</section>
+
+<section class="g4 intro">
+  <p><span class="lbl">{{ lower site.Params.jobTitle }}</span></p>
+  <div class="span2">
+    <h1>{{ .Title | default site.Params.tagline }}</h1>
+    <div class="prose intro-prose">{{ .Content }}</div>
+  </div>
+  <div class="intro-side">
+    <p><span class="lbl">agentic coding</span></p>
+    <p class="actions">
+      {{- with site.GetPage "/contact" }}<a class="btn" href="{{ .RelPermalink }}">{{ i18n "submit_problem" }}</a>{{ end }}
+      {{- with site.GetPage "/articles" }}<a class="btn btn-ghost" href="{{ .RelPermalink }}">{{ i18n "read_cases" }}</a>{{ end }}
+    </p>
+  </div>
+</section>
+
+<section class="captions" aria-labelledby="exp-title">
+  <h2 class="g4 caption-head" id="exp-title"><span class="span4">{{ i18n "what_i_do" }}</span></h2>
+  <ul class="g4 caption-list">{{ range site.Params.knowsAbout }}<li>{{ . }}</li>{{ end }}</ul>
+</section>
+
+<div class="box-band">{{ partial "boxword.html" (dict "text" site.Params.jobTitle) }}</div>
+
+<section class="cases" aria-labelledby="latest-title">
+  {{- $posts := where site.RegularPages "Section" "articles" }}
+  <div class="g4 rowhead"><h2 class="span3" id="latest-title">{{ i18n "latest_cases" }}</h2><p class="num">{{ len $posts }}</p></div>
+  {{ partial "post-list.html" (first 6 $posts) }}
+  {{- if gt (len $posts) 6 }}{{ with site.GetPage "/articles" }}<p class="g4 more"><a class="span4" href="{{ .RelPermalink }}">{{ i18n "all_articles" }}</a></p>{{ end }}{{ end }}
+</section>
+{{ end }}

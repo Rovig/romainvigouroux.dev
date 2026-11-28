@@ -1,0 +1,26 @@
+# {{ site.Params.author }}
+
+> {{ site.Params.bio }}
+
+{{ i18n "what_i_do" }}: {{ delimit site.Params.knowsAbout ", " }}.
+{{ i18n "contact" }}: {{ site.Params.email }} — LinkedIn: {{ site.Params.linkedin }}
+Full text in one file: {{ site.Home.Permalink }}llms-full.txt
+Other languages:
+{{- range hugo.Sites }}{{ if ne .Language.Lang site.Language.Lang }}
+- {{ .Language.Label }} ({{ .Language.Lang }}): {{ .Home.Permalink }}llms.txt
+{{- end }}{{ end }}
+
+## Pages
+{{ range where (where site.RegularPages "Section" "ne" "articles") "Params.llms" "ne" false }}
+- [{{ .Title }}]({{ (.OutputFormats.Get "markdown").Permalink }}): {{ .Description }}
+{{- end }}
+
+## {{ i18n "articles" }}
+{{ range where site.RegularPages "Section" "articles" }}
+- [{{ .Title }}]({{ (.OutputFormats.Get "markdown").Permalink }}): {{ or .Params.tldr .Description }}
+{{- end }}
+
+## Optional
+
+- [RSS]({{ site.Home.Permalink }}feed.xml)
+- [Sitemap]({{ site.Home.Permalink }}sitemap.xml)

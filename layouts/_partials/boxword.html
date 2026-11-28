@@ -1,0 +1,14 @@
+{{- /*
+  Mot en capitales dans un cadre, bord à bord : le « bandeau » de l'affiche.
+  Mots courts : on espace les lettres ; mots longs : on resserre légèrement. Décoratif.
+*/ -}}
+{{- $t := upper .text }}
+{{- $n := strings.RuneCount $t }}
+{{- $fs := math.Min 128.0 (div 960.0 (mul $n 0.6)) }}
+{{- $pad := add (mul $fs 0.17) 10 }}
+{{- $h := add (mul $fs 0.72) (mul $pad 2) }}
+{{- $adjust := cond (lt (mul $fs (mul $n 0.6)) 760.0) "spacing" "spacingAndGlyphs" }}
+<svg class="boxword" viewBox="0 0 1000 {{ math.Round $h }}" aria-hidden="true" focusable="false">
+  <rect x="1.5" y="1.5" width="997" height="{{ sub (math.Round $h) 3 }}" fill="none" stroke="currentColor" stroke-width="3"/>
+  <text x="20" y="{{ math.Round (add $pad (mul $fs 0.72)) }}" font-size="{{ math.Round $fs }}" textLength="960" lengthAdjust="{{ $adjust }}">{{ $t }}</text>
+</svg>

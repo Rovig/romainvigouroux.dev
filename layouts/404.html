@@ -1,0 +1,6 @@
+{{ define "main" }}
+<section class="page">
+  <header class="g4 titleband"><h1 class="span3">{{ i18n "not_found" }}</h1><p class="num">404</p>
+    <p class="lede span3">{{ i18n "not_found_text" }} {{ with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "here" }}</a>{{ end }}.</p></header>
+</section>
+{{ end }}

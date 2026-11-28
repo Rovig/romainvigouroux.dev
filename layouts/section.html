@@ -1,0 +1,7 @@
+{{ define "main" }}
+<section class="list-page">
+  <nav class="g4 crumbs" aria-label="{{ i18n "breadcrumb" }}"><p class="span4"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower .Title }}</p></nav>
+  <header class="g4 titleband"><h1 class="span3">{{ .Title }}</h1><p class="num">{{ len .Pages }}</p>{{ with .Description }}<p class="lede span3">{{ . }}</p>{{ end }}</header>
+  {{ partial "post-list.html" .Pages }}
+</section>
+{{ end }}

@@ -6,7 +6,7 @@ Prérequis : une app sur https://www.linkedin.com/developers/apps avec les produ
 redirection http://localhost:8765/callback déclarée dans l'onglet Auth.
 
 Sur le Pi (sans écran), depuis ton ordinateur :
-    ssh -L 8765:localhost:8765 pi@raspberrypi.local
+    ssh -L 8765:localhost:8765 <utilisateur>@<nom-du-3B+>.local
     sudo -u blog env $(sudo cat /etc/romainvigouroux/secrets.env | xargs) \
         python3 /srv/romainvigouroux.dev/repo/scripts/linkedin_auth.py --state /srv/romainvigouroux.dev/state
 puis ouvre l'URL affichée dans ton navigateur et connecte-toi à LinkedIn.

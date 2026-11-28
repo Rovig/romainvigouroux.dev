@@ -1,0 +1,19 @@
+<!-- Traduction : un pont en arc entre deux rives, un voyageur qui porte un livre de l'une à l'autre. -->
+<g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+  <path d="M6 18q10-6 20 0t20 0" />
+  <path d="M60 12q8-5 16 0t16 0"/>
+</g>
+<path fill="currentColor" d="M0 52l10-8 8 4 6-6v28H0z"/>
+<path fill="currentColor" d="M100 48l-12-10-9 7-5-3v28h26z"/>
+<path fill="none" stroke="currentColor" stroke-width="3" d="M14 66q36-34 72 0"/>
+<path fill="none" stroke="currentColor" stroke-width="1.3" d="M14 60q36-34 72 0"/>
+<g stroke="currentColor" stroke-width="1.3"><path d="M22 54v6M32 46v8M42 42v8M50 41v8M58 42v8M68 46v8M78 54v6"/></g>
+<g fill="currentColor">
+  <path d="M46 38l4-7 4 7z"/>
+  <rect x="48" y="38" width="4" height="7"/>
+  <path d="M52 37h6v-3h-6z"/>
+</g>
+<g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+  <path d="M0 74h100M4 80q6-4 12 0t12 0 12 0 12 0 12 0 12 0 12 0 12 0M0 87h100M8 93q6-4 12 0t12 0 12 0 12 0 12 0 12 0 12 0"/>
+</g>
+<path fill="none" stroke="currentColor" stroke-width="1.2" d="M8 44v-14M8 30l-5 6M8 33l6 4M8 37l-6 3"/>

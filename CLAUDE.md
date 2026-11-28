@@ -19,7 +19,21 @@ difficile (contraintes, enjeux, acteurs) résolu par la solution la plus simple 
 
 ## Structure d'un article (le récit)
 
-Fichier : `content/posts/AAAA-MM-JJ-slug-court.md` (utilise `python3 scripts/new_post.py "Titre"`).
+Le site est construit avec **Hugo** et existe en **français (langue principale), en anglais et en allemand**.
+
+- Article français : `content/articles/AAAA-MM-JJ-slug-court.md` — créer le squelette avec
+  `hugo new content articles/AAAA-MM-JJ-slug-court.md`.
+- Traduction anglaise : **même nom de fichier** avec `.en.md` (`content/articles/AAAA-MM-JJ-slug-court.en.md`),
+  avec un `slug` anglais. C'est le nom de fichier identique qui relie les deux versions.
+- Traduction allemande : même nom de fichier avec `.de.md`, `slug` allemand (URL `/de/artikel/<slug>/`).
+- Les traductions ne sont pas littérales : mêmes faits, mêmes chiffres, mais tournures naturelles pour un lecteur
+  anglophone ou germanophone (recruteur international, CTO). En allemand, vouvoiement (« Sie »).
+  Titres de sections en anglais : *The situation*, *Why it's harder than it looks*, *The options I ruled out*,
+  *The architecture I chose*, *What it delivered*, *What I would do differently*.
+  En allemand : *Die Ausgangslage*, *Warum es schwieriger ist, als es aussieht*, *Die verworfenen Ansätze*,
+  *Die gewählte Architektur*, *Was es gebracht hat*, *Was ich anders machen würde*.
+- Marqueurs de donnée manquante : `[À CONFIRMER : …]`, `[TO CONFIRM: …]`, `[ZU BESTÄTIGEN: …]`.
+- `linkedin` et `linkedin_post` uniquement dans la version française.
 
 1. **Premier paragraphe = la réponse.** 40 à 70 mots qui se suffisent à eux-mêmes : quel problème, pour qui,
    quelle approche, quel résultat. C'est le passage que les IA extraient et citent.
@@ -35,17 +49,36 @@ Fichier : `content/posts/AAAA-MM-JJ-slug-court.md` (utilise `python3 scripts/new
 
 Longueur cible : 1 000 à 1 800 mots. Ton : première personne, direct, phrases courtes, zéro jargon gratuit.
 
+## Timbre de l'article (illustration)
+
+Chaque article a un **timbre** : une petite estampe noire sur papier, dans l'esprit des gravures japonaises,
+qui iconise l'histoire de l'article. Il s'affiche dans les listes (à droite puis à gauche, un article sur deux)
+et en tête de l'article.
+
+- Dessiner `assets/stamps/<clé>.svg` : uniquement le contenu du dessin (pas de balise `<svg>`), dans un carré
+  de 100 × 100, avec un commentaire en première ligne qui dit ce que le dessin représente.
+- Une seule encre : `currentColor` (traits et aplats noirs). Pour un détail clair posé sur du noir, la classe
+  `p` (remplissage papier), `p-stroke` (trait papier) ou `p-text` (texte papier). Aucune autre couleur.
+- Vocabulaire des estampes : aplats noirs, bandes de nuages arrondies, vagues à griffes, pluie en hachures,
+  soleil ou lune en cercle, monts et pins stylisés. Une scène simple, lisible à 90 px de large.
+- Un élément concret de l'histoire doit s'y reconnaître (le pont pour une traduction, l'averse et les cadres
+  numérotés pour le suivi de personnes…). Pas de personnage ni de logo existant.
+- Si le dessin utilise un `clipPath` ou un `mask`, lui donner un id préfixé par la clé (`<clé>-clip`).
+- Ajouter la ligne `<nom du fichier sans .md>: <clé>` dans `data/stamps.yaml` : les traductions utilisent
+  automatiquement le même timbre. Le cadre, la dentelure, la valeur (temps de lecture) et la légende (premier
+  sujet) sont ajoutés par `layouts/_partials/stamp.html`.
+
 ## Règles GEO (lisibilité par les IA)
 
 - **Titres H2/H3 formulés comme des questions ou des affirmations nettes**, jamais « Introduction » ou « Conclusion ».
 - **Un paragraphe = une idée**, autonome : il doit rester compréhensible s'il est extrait seul.
 - **Définir chaque terme technique** à sa première occurrence (« le RAG, c'est-à-dire… »).
-- **Les termes-clés de Romain** (`site.yaml` → `author.knows_about`) : en utiliser 2 ou 3 par article, naturellement,
+- **Les termes-clés de Romain** (`hugo.toml` → `knowsAbout`, par langue) : en utiliser 2 ou 3 par article, naturellement,
   dans le titre ou un H2 et dans le premier paragraphe. Jamais de bourrage.
 - **Les entités précises** plutôt que les généralités : noms d'outils, versions, volumes, durées.
 - **Tableaux** pour toute comparaison (options écartées vs retenue, avant/après).
 - **Sources** : lien vers la doc officielle ou l'étude quand une affirmation n'est pas du vécu.
-- Mettre à jour `updated:` quand on modifie un article — la fraîcheur compte pour les moteurs.
+- Mettre à jour `lastmod:` quand on modifie un article (dans les trois langues) — la fraîcheur compte pour les moteurs.
 
 ## Frontmatter (schéma)
 
@@ -54,7 +87,8 @@ Longueur cible : 1 000 à 1 800 mots. Ton : première personne, direct, phrases 
 title: "Titre qui nomme le problème, pas la techno"   # ≤ 70 caractères
 description: "Une phrase : problème + approche + résultat."  # ≤ 160 caractères, sert de meta description
 date: 2026-11-27
-updated: 2026-11-27          # optionnel
+lastmod: 2026-11-27          # optionnel, date de dernière modification
+slug: slug-court             # URL : /articles/slug-court/ (traduit dans les fichiers .en.md et .de.md)
 tags: [Agentic coding, RAG]  # 2 à 4, réutiliser les sujets existants (voir /sujets/)
 keywords: [architecte IA, …] # optionnel, termes de recherche visés
 tldr: "Résumé en 1-2 phrases, affiché en tête et repris dans llms.txt."
@@ -83,9 +117,9 @@ draft: false                 # true = non publié
 
 ## Publier
 
-1. Écrire/modifier l'article dans `content/posts/`.
-2. Vérifier : `python3 build.py` (doit afficher le nombre d'articles sans erreur). Prévisualiser avec `--serve`.
-3. `git add content/ && git commit -m "post: <titre>" && git push` sur `main`.
+1. Écrire/modifier l'article dans `content/articles/` (version française + traductions `.en.md` et `.de.md`).
+2. Vérifier : `hugo` (doit se terminer sans `ERROR`). Prévisualiser avec `hugo server -D`.
+3. `git add content/ assets/stamps/ data/stamps.yaml && git commit -m "post: <titre>" && git push` sur `main`.
 4. Le Raspberry Pi récupère le dépôt toutes les 5 minutes, reconstruit, notifie IndexNow et publie sur LinkedIn.
 
-Ne modifie pas `build.py`, `templates/` ou `deploy/` dans le cadre d'une simple publication d'article.
+Ne modifie pas `hugo.toml`, `layouts/`, `i18n/` ou `deploy/` dans le cadre d'une simple publication d'article.
