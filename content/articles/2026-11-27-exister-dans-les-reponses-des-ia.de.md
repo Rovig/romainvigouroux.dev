@@ -2,6 +2,7 @@
 title: "In KI-Antworten sichtbar werden – mit einem Blog auf dem Raspberry Pi"
 description: "Wie ich meine Expertise als KI-Architekt für ChatGPT, Claude und Perplexity lesbar mache: mit einer selbst gehosteten statischen Website, die jede Woche gemessen wird."
 date: 2026-11-27
+lastmod: 2026-11-28
 slug: in-ki-antworten-sichtbar-werden
 tags: [GEO, KI-Architektur, Agentic Coding]
 keywords: [GEO, Generative Engine Optimization, llms.txt, KI-Architekt, Raspberry Pi]
@@ -13,13 +14,13 @@ constraints:
   - "Veröffentlichen aus einem Gespräch mit Claude, ohne Admin-Oberfläche"
   - "Messen, ob KI-Crawler die Website tatsächlich lesen"
   - "Kein offener Port am Heimrouter"
-stack: [Hugo, Caddy, Cloudflare Tunnel, Raspberry Pi 4, schema.org, llms.txt, Python]
+stack: [Hugo, Caddy, Cloudflare Tunnel, Raspberry Pi 3 B+, schema.org, llms.txt, Python]
 outcome: "Eine vollständig maschinenlesbare Website, veröffentlicht per einfachem git push, mit einem wöchentlichen Bericht über menschliche Besucher und KI-Crawler. [ZU BESTÄTIGEN: erste Zahlen nach 4 Wochen]"
 faq:
   - q: "Was ist GEO?"
     a: "GEO (Generative Engine Optimization) bedeutet, Inhalte so aufzubereiten, dass generative Suchsysteme wie ChatGPT, Claude, Perplexity oder Gemini sie leicht finden, verstehen und zitieren können. Es erweitert SEO: Ziel ist es, in einer Antwort zitiert zu werden, nicht nur in einer Linkliste zu ranken."
   - q: "Warum einen Blog auf einem Raspberry Pi hosten statt auf Medium?"
-    a: "Weil man alles kontrolliert, was Crawler lesen: strukturierte Daten, llms.txt, robots.txt, Markdown-Versionen. Auf einer fremden Plattform gibt es diese Hebel nicht, und man sieht nicht, welche KI-Crawler vorbeikommen. Ein Pi 4 verbraucht wenige Watt, also unter 10 € Strom pro Jahr, und Cloudflare fängt die Last ab."
+    a: "Weil man alles kontrolliert, was Crawler lesen: strukturierte Daten, llms.txt, robots.txt, Markdown-Versionen. Auf einer fremden Plattform gibt es diese Hebel nicht, und man sieht nicht, welche KI-Crawler vorbeikommen. Ein Raspberry Pi 3 B+ verbraucht nur wenige Watt, und Cloudflare fängt die Last ab."
   - q: "Bringt die Datei llms.txt wirklich etwas?"
     a: "Sie ist eine junge Konvention, kein verbindlicher Standard: Manche KI-Werkzeuge lesen sie, andere nicht. Sie kostet nichts, da sie automatisch erzeugt wird, und bietet Agenten einen sauberen Index der Website. Der Wochenbericht zeigt, ob sie tatsächlich abgerufen wird."
   - q: "Woran erkenne ich, ob ein KI-Assistent meine Website zitiert?"
@@ -27,7 +28,7 @@ faq:
 ---
 Wenn ein Recruiter oder ein Kunde einen KI-Assistenten nach einem KI-Architekten fragt, entsteht die Antwort aus
 dem, was die Modelle gelesen haben, und aus dem, was sie live abrufen können. Um darin vorzukommen, habe ich einen
-selbst gehosteten statischen Blog auf einem Raspberry Pi 4 aufgesetzt: Inhalte, die für Maschinen strukturiert sind,
+selbst gehosteten statischen Blog auf einem Raspberry Pi 3 B+ aufgesetzt: Inhalte, die für Maschinen strukturiert sind,
 eine konsistente Identität über alle meine Profile hinweg und ein Wochenbericht, der die Besuche von KI-Crawlern zählt.
 
 ## Die Ausgangslage
@@ -70,7 +71,7 @@ Gespräch mit Claude ──► git push (GitHub)
                                    │
                     alle 5 Min. holt der Pi das Repository
                                    ▼
-              Raspberry Pi 4: hugo ──► HTML + JSON-LD + llms.txt + .md
+              Raspberry Pi 3 B+: hugo ──► HTML + JSON-LD + llms.txt + .md
                                    │
                          Caddy (JSON-Logs)
                                    │

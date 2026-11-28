@@ -2,6 +2,7 @@
 title: "Exister dans les réponses des IA avec un blog sur Raspberry Pi"
 description: "Comment je rends mon expertise d'architecte IA lisible par ChatGPT, Claude et Perplexity avec un site statique auto-hébergé, mesuré chaque semaine."
 date: 2026-11-27
+lastmod: 2026-11-28
 slug: exister-dans-les-reponses-des-ia
 tags: [GEO, Architecture IA, Agentic coding]
 keywords: [GEO, generative engine optimization, llms.txt, architecte IA, Raspberry Pi]
@@ -13,13 +14,13 @@ constraints:
   - "Publier depuis une conversation avec Claude, sans back-office"
   - "Mesurer si les robots d'IA lisent vraiment le site"
   - "Zéro port ouvert sur la box internet"
-stack: [Hugo, Caddy, Cloudflare Tunnel, Raspberry Pi 4, schema.org, llms.txt, Python]
+stack: [Hugo, Caddy, Cloudflare Tunnel, Raspberry Pi 3 B+, schema.org, llms.txt, Python]
 outcome: "Un site entièrement lisible par les machines, publié par un simple git push, avec un rapport hebdomadaire des visites humaines et des robots d'IA. [À CONFIRMER : premiers chiffres après 4 semaines]"
 faq:
   - q: "Qu'est-ce que le GEO ?"
     a: "Le GEO (Generative Engine Optimization) consiste à rendre un contenu facile à trouver, comprendre et citer par les moteurs génératifs comme ChatGPT, Claude, Perplexity ou Gemini. Il prolonge le SEO : on optimise pour être repris dans une réponse, pas seulement pour un classement de liens."
   - q: "Pourquoi héberger un blog sur un Raspberry Pi plutôt que sur Medium ?"
-    a: "Parce qu'on maîtrise tout ce que lisent les robots : données structurées, llms.txt, robots.txt, versions Markdown. Sur une plateforme tierce, ces leviers n'existent pas, et on ne voit pas quels robots d'IA passent. Un Pi 4 consomme quelques watts, soit moins de 10 € d'électricité par an, et Cloudflare absorbe la charge."
+    a: "Parce qu'on maîtrise tout ce que lisent les robots : données structurées, llms.txt, robots.txt, versions Markdown. Sur une plateforme tierce, ces leviers n'existent pas, et on ne voit pas quels robots d'IA passent. Un Raspberry Pi 3 B+ ne consomme que quelques watts, et Cloudflare absorbe la charge."
   - q: "Le fichier llms.txt sert-il vraiment ?"
     a: "C'est une convention récente, pas un standard imposé : certains outils d'IA le lisent, d'autres non. Son coût est nul puisqu'il est généré automatiquement, et il offre aux agents un index propre du site. Le rapport hebdomadaire indique s'il est effectivement consulté."
   - q: "Comment savoir si une IA cite mon site ?"
@@ -40,7 +41,7 @@ linkedin_post: |
 ---
 Quand un recruteur ou un client demande à une IA de lui recommander un architecte IA, la réponse se construit à
 partir de ce que les modèles ont lu et de ce qu'ils peuvent récupérer en direct. Pour y figurer, j'ai monté un
-blog statique auto-hébergé sur un Raspberry Pi 4 : contenus structurés pour les machines, identité cohérente
+blog statique auto-hébergé sur un Raspberry Pi 3 B+ : contenus structurés pour les machines, identité cohérente
 sur tous mes profils, et un rapport hebdomadaire qui compte les visites des robots d'IA.
 
 ## La situation
@@ -85,7 +86,7 @@ Conversation avec Claude ──► git push (GitHub)
                                    │
                     toutes les 5 min, le Pi tire le dépôt
                                    ▼
-              Raspberry Pi 4 : hugo ──► HTML + JSON-LD + llms.txt + .md
+              Raspberry Pi 3 B+ : hugo ──► HTML + JSON-LD + llms.txt + .md
                                    │
                          Caddy (journaux JSON)
                                    │

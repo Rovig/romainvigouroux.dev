@@ -1,13 +1,13 @@
 # romainvigouroux.dev
 
 Blog d'architecte IA optimisé pour le GEO, construit avec [Hugo](https://gohugo.io), en français, anglais et allemand,
-auto-hébergé sur un Raspberry Pi 4, publié depuis Claude.
+auto-hébergé sur un Raspberry Pi 3 B+, publié depuis Claude.
 
 ```text
 Claude (conversation / Claude Code) ──► git push ──► GitHub (dépôt = source de vérité)
                                                         │  toutes les 5 min
                                                         ▼
-Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → IndexNow → LinkedIn
+Raspberry Pi 3 B+ ── update.sh : git pull → hugo → bascule atomique → IndexNow → LinkedIn
      │
   Caddy 127.0.0.1:8090 (journaux JSON) ◄── cloudflared (tunnel sortant, aucun port ouvert)
                                                         │
@@ -34,18 +34,23 @@ Raspberry Pi 4 ── update.sh : git pull → hugo → bascule atomique → Ind
 C'est fait : https://github.com/Rovig/romainvigouroux.dev
 
 ### 2. Raspberry Pi
-1. Raspberry Pi Imager → **Raspberry Pi OS Lite (64-bit)**, active SSH, nom d'hôte `raspberrypi`. Branche-le en Ethernet.
-2. `ssh pi@raspberrypi.local`, puis :
+1. Raspberry Pi Imager → modèle **Raspberry Pi 3**, système **Raspberry Pi OS Lite (64-bit)** (le 32 bits fonctionne
+   aussi), active SSH, nom d'hôte **`romainvigouroux`** — un nom différent de celui du Pi 4 pour ne pas les confondre
+   sur le réseau. Branche-le en Ethernet.
+2. `ssh pi@romainvigouroux.local`, puis :
 ```bash
 git clone https://github.com/Rovig/romainvigouroux.dev.git /tmp/rv
 sudo bash /tmp/rv/deploy/install.sh https://github.com/Rovig/romainvigouroux.dev.git <TOKEN_TUNNEL>
 ```
-Le script installe Hugo (version figée, somme de contrôle vérifiée) **à part, dans `/opt/hugo`**, sans toucher au
-`hugo` du système dont dépend le site rbrtvgrx (0.111.3). Ce site-là est servi par **nginx** (ports 80 et 8080) :
-Caddy tourne à côté, sur `127.0.0.1:8090`, et le script s'arrête sans rien modifier si ce port est déjà pris. nginx
-n'est jamais touché. Il n'écrase rien d'existant : le site Caddy est un fichier
-séparé (`/etc/caddy/romainvigouroux.caddy`) ajouté par `import`, et si un tunnel cloudflared tourne déjà, il le laisse
-en place (il suffit d'ajouter le nom d'hôte `romainvigouroux.dev` → `127.0.0.1:8090` à ce tunnel). Si le dépôt est privé,
+Le site tourne sur le **Raspberry Pi 3 B+**. Le site des peintures (rbrtvgrx) reste sur le Pi 4 avec nginx et son
+propre tunnel : les deux machines sont indépendantes. Le 3B+ a donc **son propre tunnel Cloudflare** (étape 3), créé
+avec le token passé à `install.sh`.
+
+Le script installe Hugo (version figée, somme de contrôle vérifiée) **à part, dans `/opt/hugo`**, et prend l'archive
+`arm64` ou `arm` selon que le système est en 64 ou 32 bits. Il reste prudent si un autre site partage un jour la
+machine : Caddy écoute sur `127.0.0.1:8090` et le script s'arrête sans rien modifier si ce port est pris ; le site
+Caddy est un fichier séparé (`/etc/caddy/romainvigouroux.caddy`) ajouté par `import` ; un tunnel cloudflared déjà en
+service n'est pas remplacé (il suffit alors d'y ajouter `romainvigouroux.dev` → `127.0.0.1:8090`). Si le dépôt est privé,
 utilise l'URL `git@github.com:Rovig/romainvigouroux.dev.git` et colle la **clé de déploiement** affichée dans
 GitHub → dépôt → Settings → Deploy keys (lecture seule).
 Tu peux lancer `install.sh` sans token puis le relancer à l'étape 3.
