@@ -9,6 +9,7 @@
 <meta name="description" content="{{ $desc }}">
 <meta name="author" content="{{ site.Params.author }}">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#0c0c0c">
 <link rel="canonical" href="{{ .Permalink }}">
 {{- range .AllTranslations }}
 <link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
@@ -39,39 +40,43 @@
 <body>
 <a class="skip" href="#contenu">{{ i18n "skip" }}</a>
 <header class="site-header">
-  <div class="wrap header-inner">
-    <a class="brand" href="{{ site.Home.RelPermalink }}" rel="home">
-      <span class="brand-mark" aria-hidden="true">rv</span>
-      <span class="brand-text"><strong>{{ site.Params.author }}</strong><span>{{ site.Params.jobTitle }}</span></span>
+  <div class="header-grid">
+    <a class="brand cell" href="{{ site.Home.RelPermalink }}" rel="home">
+      <span class="brand-name">{{ lower site.Params.author }}</span>
+      <span class="brand-role">{{ lower site.Params.jobTitle }}</span>
     </a>
-    <nav aria-label="{{ i18n "nav_label" }}">
-      {{- with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "articles" }}</a>{{ end }}
-      {{- with site.GetPage "/tags" }}<a class="nav-topics" href="{{ .RelPermalink }}">{{ i18n "topics" }}</a>{{ end }}
-      {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ i18n "about" }}</a>{{ end }}
-      {{- with site.GetPage "/contact" }}<a class="nav-cta" href="{{ .RelPermalink }}">{{ i18n "contact" }}</a>{{ end }}
-      {{- $page := . }}
-      <span class="lang-switch">
-      {{- range hugo.Sites }}{{ if ne .Language.Lang site.Language.Lang }}
-        {{- $lang := .Language.Lang }}{{ $href := .Home.RelPermalink }}
-        {{- range $page.Translations }}{{ if eq .Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
-        <a href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ .Language.Label }}">{{ upper $lang }}</a>
-      {{- end }}{{ end }}
-      </span>
+    <nav class="cell nav" aria-label="{{ i18n "nav_label" }}">
+      {{- with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "articles") }}</a>{{ end }}
+      {{- with site.GetPage "/tags" }}<a class="nav-topics" href="{{ .RelPermalink }}">{{ lower (i18n "topics") }}</a>{{ end }}
+      {{- with site.GetPage "/a-propos" }}<a href="{{ .RelPermalink }}">{{ lower (i18n "about") }}</a>{{ end }}
+      {{- with site.GetPage "/contact" }}<a class="nav-cta" href="{{ .RelPermalink }}">{{ lower (i18n "contact") }}</a>{{ end }}
     </nav>
+    {{- $page := . }}
+    <p class="cell lang-switch">
+    {{- range hugo.Sites }}
+      {{- $lang := .Language.Lang }}
+      {{- if eq $lang site.Language.Lang }}<span aria-current="true" lang="{{ $lang }}">{{ $lang }}</span>
+      {{- else }}{{ $href := .Home.RelPermalink }}
+        {{- range $page.Translations }}{{ if eq .Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+        <a href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ .Language.Label }}">{{ $lang }}</a>
+      {{- end }}
+    {{- end }}
+    </p>
   </div>
 </header>
 <main id="contenu">
 {{ block "main" . }}{{ end }}
 </main>
 <footer class="site-footer">
-  <div class="wrap footer-inner">
-    <p><strong>{{ site.Params.author }}</strong> — {{ site.Params.jobTitle }}. {{ site.Params.tagline }}</p>
-    <p class="footer-links">
+  <div class="footer-grid">
+    <p class="cell"><strong>{{ site.Params.author }}</strong><br>{{ site.Params.jobTitle }}. {{ site.Params.tagline }}</p>
+    <p class="cell footer-links">
       {{- range site.Params.sameAs }}<a href="{{ . }}" rel="me">{{ index (split . "/") 2 | replaceRE "^www\\." "" }}</a>{{ end }}
-      <a href="{{ site.Home.RelPermalink }}feed.xml">RSS</a><a href="{{ site.Home.RelPermalink }}llms.txt">llms.txt</a>
+      <a href="{{ site.Home.RelPermalink }}feed.xml">rss</a><a href="{{ site.Home.RelPermalink }}llms.txt">llms.txt</a>
     </p>
-    <p class="muted">© {{ now.Year }} {{ site.Params.author }} · {{ i18n "footer_host" }}</p>
+    <p class="cell muted">© {{ now.Year }} {{ site.Params.author }}<br>{{ i18n "footer_host" }}</p>
   </div>
+  <p class="footer-mark" aria-hidden="true">{{ lower site.Params.author }}</p>
 </footer>
 </body>
 </html>

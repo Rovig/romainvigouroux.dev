@@ -1,8 +1,9 @@
 {{ define "main" }}
-<section class="wrap">
-  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ i18n "topics" }}</a></nav>
-  <h1>{{ i18n "topic_prefix" }} {{ .Title }}</h1>
-  <p class="lede">{{ i18n "topic_intro" }} {{ .Title }}.</p>
+<section class="list-page">
+  <header class="page-head">
+    <div class="cell page-head-side"><nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / <a href="{{ .Parent.RelPermalink }}">{{ lower (i18n "topics") }}</a></nav><p class="count">{{ len .Pages }}</p></div>
+    <div class="cell page-head-main"><h1>{{ i18n "topic_prefix" }} {{ .Title }}</h1><p class="lede">{{ i18n "topic_intro" }} {{ .Title }}.</p></div>
+  </header>
   {{ partial "post-list.html" .Pages }}
 </section>
 {{ end }}

@@ -1,21 +1,26 @@
 {{ define "main" }}
-<section class="hero wrap">
-  <p class="eyebrow">{{ site.Params.jobTitle }} · Agentic coding</p>
-  <h1>{{ .Title | default site.Params.tagline }}</h1>
-  <div class="prose hero-prose">{{ .Content }}</div>
-  <p class="hero-actions">
-    {{- with site.GetPage "/contact" }}<a class="btn" href="{{ .RelPermalink }}">{{ i18n "submit_problem" }}</a>{{ end }}
-    {{- with site.GetPage "/articles" }}<a class="btn btn-ghost" href="{{ .RelPermalink }}">{{ i18n "read_cases" }}</a>{{ end }}
-  </p>
+<section class="hero">
+  <div class="hero-text">
+    <p class="kicker">{{ lower site.Params.jobTitle }} / agentic coding</p>
+    <h1>{{ .Title | default site.Params.tagline }}</h1>
+    <div class="prose hero-prose">{{ .Content }}</div>
+    <p class="actions">
+      {{- with site.GetPage "/contact" }}<a class="btn" href="{{ .RelPermalink }}">{{ i18n "submit_problem" }} →</a>{{ end }}
+      {{- with site.GetPage "/articles" }}<a class="btn btn-ghost" href="{{ .RelPermalink }}">{{ i18n "read_cases" }}</a>{{ end }}
+    </p>
+  </div>
+  {{ partial "glyph.html" (dict "text" "rv" "class" "glyph--hero") }}
 </section>
-<section class="wrap expertise" aria-labelledby="exp-title">
-  <h2 id="exp-title">{{ i18n "what_i_do" }}</h2>
-  <ul class="chips">{{ range site.Params.knowsAbout }}<li>{{ . }}</li>{{ end }}</ul>
+
+<section class="block" aria-labelledby="exp-title">
+  <h2 class="block-title" id="exp-title">{{ i18n "what_i_do" }}</h2>
+  <ul class="cells">{{ range site.Params.knowsAbout }}<li>{{ . }}</li>{{ end }}</ul>
 </section>
-<section class="wrap" aria-labelledby="latest-title">
-  <h2 id="latest-title">{{ i18n "latest_cases" }}</h2>
+
+<section class="block" aria-labelledby="latest-title">
+  <h2 class="block-title" id="latest-title">{{ i18n "latest_cases" }}</h2>
   {{- $posts := where site.RegularPages "Section" "articles" }}
   {{ partial "post-list.html" (first 6 $posts) }}
-  {{- if gt (len $posts) 6 }}{{ with site.GetPage "/articles" }}<p><a href="{{ .RelPermalink }}">{{ i18n "all_articles" }}</a></p>{{ end }}{{ end }}
+  {{- if gt (len $posts) 6 }}{{ with site.GetPage "/articles" }}<p class="more"><a href="{{ .RelPermalink }}">{{ i18n "all_articles" }}</a></p>{{ end }}{{ end }}
 </section>
 {{ end }}

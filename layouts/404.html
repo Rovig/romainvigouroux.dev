@@ -1,6 +1,9 @@
 {{ define "main" }}
-<section class="wrap">
-  <h1>{{ i18n "not_found" }}</h1>
-  <p class="lede">{{ i18n "not_found_text" }} {{ with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "here" }}</a>{{ end }}.</p>
+<section class="page">
+  <header class="page-head">
+    <div class="cell page-head-side"><p class="count">404</p></div>
+    <div class="cell page-head-main"><h1>{{ i18n "not_found" }}</h1><p class="lede">{{ i18n "not_found_text" }} {{ with site.GetPage "/articles" }}<a href="{{ .RelPermalink }}">{{ i18n "here" }}</a>{{ end }}.</p></div>
+  </header>
+  {{ partial "glyph.html" (dict "text" "?" "class" "glyph--strip") }}
 </section>
 {{ end }}

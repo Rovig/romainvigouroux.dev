@@ -1,8 +1,9 @@
 {{ define "main" }}
-<section class="wrap">
-  <nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ i18n "home" }}</a> / {{ .Title }}</nav>
-  <h1>{{ .Title }}</h1>
-  {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+<section class="list-page">
+  <header class="page-head">
+    <div class="cell page-head-side"><nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}"><a href="{{ site.Home.RelPermalink }}">{{ lower (i18n "home") }}</a> / {{ lower .Title }}</nav><p class="count">{{ len .Pages }}</p></div>
+    <div class="cell page-head-main"><h1>{{ .Title }}</h1>{{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}</div>
+  </header>
   {{ partial "post-list.html" .Pages }}
 </section>
 {{ end }}
